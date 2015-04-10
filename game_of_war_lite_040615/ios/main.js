@@ -1,21 +1,19 @@
 var scene1, scene2, scene3;
 var activescene, activeplot, numberbuilt = 0;
-var upperplot, lowerplot, lowerarrow, upperarrow;
+var upperplot, lowerplot, lowerarrow, upperarrow, tutorialarrow;
 var stage, preload, hitpreload, smallpreload, smallestpreload;
+var greetingsimg1, greetingsimg2, tutorialhitarea, tutorialtext, tutorialscreen;
 function init() {
-
-    var backgroundimg = new Image();
-    //backgroundimg.src = "assets/First_Menu.png";
-    backgroundimg.src = "assets/gamePlay.jpg";
-    var backgroundbitmap = new createjs.Bitmap(backgroundimg);
-
     var scene1manifest = [
         {src: "blank_02.png", id: "emptyplot1"},
         {src: "blank_00.png", id: "emptyplot0"},
         {src: "waterfalls1.png", id: "largewaterfall"},
         {src: "waterfalls2.png", id: "smallwaterfall"},
         {src: "purpleArrow.png", id: "purplearrow"},
-        {src: "cloud_3.png", id: "cloud_3"}
+        {src: "greenarrow.png", id: "greenarrow"},
+        {src: "cloud_3.png", id: "cloud_3"},
+        {src: "barracksTextBox.png", id: "tutorial1"},
+        {src: "barracksTextBox.png", id: "tutorial2"}
     ];
 
     var scene2Manifest = [
@@ -29,7 +27,7 @@ function init() {
     ];
 
     var scene3Manifest = [
-        {src:"barracksBuilding.jpg", id: "scene3Background"},
+        {src:"barracksScene.jpg", id: "scene3Background"},
         {src:"buildButton.jpg", id: "buildButton"},
         {src:"spritesheet_yellowSparkle.png", id: "sparkles"},
         {src: "purpleArrow.png", id: "purplearrow"}
@@ -49,19 +47,22 @@ function init() {
 
     // create a new stage and point it at our canvas:
     stage = new createjs.Stage(document.getElementById("testCanvas"));
-    backgroundbitmap.x = 0;
-    backgroundbitmap.y = 0;
-    backgroundbitmap.scaleX = backgroundbitmap.scaleY = 1;
+    
 
     scene1 = createscene("scene1");
     scene2 = createscene("scene2");
     scene3 = createscene("scene3");
 
+    var backgroundimg = new Image();
+    backgroundimg.src = "assets/gamePlay.jpg";
+    var backgroundbitmap = new createjs.Bitmap(backgroundimg);
+    backgroundbitmap.x = 0;
+    backgroundbitmap.y = 0;
+    backgroundbitmap.scaleX = backgroundbitmap.scaleY = 1;
     scene1.addimage(backgroundbitmap);
 
     activescene = scene1;
     gotoscene(scene1);
-    //createCTA();
 
     createjs.Ticker.timingMode = createjs.Ticker.RAF;
     createjs.Ticker.addEventListener("tick", tick);
@@ -109,12 +110,6 @@ function tick(event) {
                 ) {
                 stage.removeChildAt(i);
             }
-            /*
-            //remove sparkles that are off screen or not invisble
-            if (sparkle.alpha <= 0 || sparkle.y > document.getElementById("testCanvas").height) {
-                stage.removeChildAt(i);
-            }
-            */
         }
     }
 
@@ -279,12 +274,14 @@ function handlescene1load(){
     lowerplotshine.y = 212;
     lowerplotshine.alpha = 1;
     lowerplotshine.scaleX = lowerplotshine.scaleY = 1;
+    lowerplot.shine = lowerplotshine;
 
     var upperplotshine = new createjs.Bitmap(scene1preload.getResult("emptyplot0"));
     upperplotshine.x = 190;
     upperplotshine.y = 166;
     upperplotshine.alpha = 1;
     upperplotshine.scaleX = upperplotshine.scaleY = 1;
+    upperplot.shine = upperplotshine;
 
     var shinepulselower = (function (ashine) {
            var shinepulsedirection = 1;
@@ -432,18 +429,105 @@ function handlescene1load(){
     stage.addChild(upperarrow);
     stage.addChild(waterfallcloud);
 
+    //load the tutorial image and text
+    tutorialscreen = new createjs.Shape;
+    tutorialscreen.graphics.beginFill("#000").drawRect(0,0,320,480);
+    tutorialscreen.alpha = 0.6;
+    stage.addChild(tutorialscreen);
+
+    var tutorialimg = new Image();
+    tutorialimg.src = "assets/barracksTextBox.png";
+    greetingsimg1 = new createjs.Bitmap(tutorialimg);
+    greetingsimg1.x = 0;
+    greetingsimg1.y = 120;
+    greetingsimg1.scaleX = greetingsimg1.scaleY = 1;
+    stage.addChild(greetingsimg1);
+
+    tutorialtext = new createjs.Text("Greetings my King! I am Athena, your guide.", "bold 11.5px Arial", "#402000");
+    tutorialtext.x = 205;
+    tutorialtext.y = 180;
+    tutorialtext.lineHeight = 12;
+    tutorialtext.textAlign = 'center';
+    tutorialtext.lineWidth = 190;
+    tutorialtext.textBaseline = "alphabetic";
+    stage.addChild(tutorialtext);
+
+    tutorialhitarea = new createjs.Shape;
+    tutorialhitarea.graphics.beginFill("#fff").drawRect(120,225,170,42);
+    tutorialhitarea.alpha = 0.01;
+    stage.addChild(tutorialhitarea);
+    setTimeout(function(){
+        tutorialhitarea.addEventListener("click", handletutorialclick, false);
+    }, 1500);
+    
+    tutorialarrow = new createjs.Bitmap(scene1preload.getResult("greenarrow"));
+    tutorialarrow.x = 205;
+    tutorialarrow.y = 301;
+    tutorialarrow.alpha = 1;
+    tutorialarrow.regX = 33;
+    tutorialarrow.regY = 45;
+    tutorialarrow.rotation = 0;
+    tutorialarrow.scaleX = tutorialarrow.scaleY = 0.6;
+
+    var tutorialpulse = (function (aarrow) {
+           var arrowscaledirection = 1;
+           var thearrow = aarrow;
+           return function ()
+           {
+                if(thearrow.scaleX >= 0.7){
+                   arrowscaledirection = -1;
+                } else if (thearrow.scaleX <= 0.6){
+                   arrowscaledirection = 1;
+                }
+                thearrow.scaleX += arrowscaledirection * 0.01;
+                thearrow.scaleY += arrowscaledirection * 0.01;
+               
+                stage.update();
+           };
+    })(tutorialarrow)
+    setInterval(tutorialpulse, 50);
+    stage.addChild(tutorialarrow);
+}
+
+function handletutorialclick(){
+/*
+    stage.removeChild(greetingsimg1);
+    //load the tutorial image and text
+    var tutorialimg2 = new Image();
+    tutorialimg2.src = "assets/barracksTextBox.png";
+    greetingsimg2 = new createjs.Bitmap(tutorialimg2);
+    greetingsimg2.x = 0;
+    greetingsimg2.y = 120;
+    greetingsimg2.scaleX = greetingsimg2.scaleY = 1;
+    stage.addChild(greetingsimg2);
+    */
+
+    tutorialtext.text = "First, let me show you how to build some Barracks. A thriving city will need Soldiers!";
+    //stage.addChild(tutorialtext);
+    //stage.addChild(tutorialhitarea);
+    tutorialhitarea.addEventListener("click", handletutorialclickfinal, false);
+}
+
+function handletutorialclickfinal(){
+    stage.removeChild(greetingsimg1);
+    stage.removeChild(tutorialtext);
+    stage.removeChild(tutorialhitarea);
+    stage.removeChild(tutorialscreen);
+    stage.removeChild(tutorialarrow);
+
+    //create the hit areas for the plots of land
     var plothitarea = new createjs.Shape;
     plothitarea.graphics.beginFill("#000").drawRect(0,0,64,32);
 
     upperplot.hitArea = plothitarea;
     lowerplot.hitArea = plothitarea;
-    upperplotshine.hitArea = plothitarea;
-    lowerplotshine.hitArea = plothitarea;
+    upperplot.shine.hitArea = plothitarea;
+    lowerplot.shine.hitArea = plothitarea;
 
-    upperplot.addEventListener("mousedown", handleupperclick, false);
-    lowerplot.addEventListener("mousedown", handlelowerclick, false);
-    upperplotshine.addEventListener("mousedown", handleupperclick, false);
-    lowerplotshine.addEventListener("mousedown", handlelowerclick, false);
+    upperplot.addEventListener("click", handleupperclick, false);
+    lowerplot.addEventListener("click", handlelowerclick, false);
+    upperplot.shine.addEventListener("click", handleupperclick, false);
+    lowerplot.shine.addEventListener("click", handlelowerclick, false);
 }
 
 function handleupperclick(event)
@@ -534,7 +618,7 @@ function handlescene2load(){
 
     scene2barracksbox.hitArea = barracksboxhitarea;
 
-    scene2barracksbox.addEventListener("mousedown", handlebarracksclick, false);
+    scene2barracksbox.addEventListener("click", handlebarracksclick, false);
     scene2.addimage(scene2backgroundbitmap);
     scene2.addimage(scene2barracksbox);
     scene2.addimage(scene2arrow);
@@ -699,7 +783,8 @@ function handlebuildclick(){
 
             gotoscene(scene1);
             stage.removeChild(lowerarrow);
-            stage.removeChild(lowerarrow);
+            stage.removeChild(lowerplot);
+            stage.removeChild(lowerplot.shine);
             //add burst of stars to the completed barracks
             setTimeout( function(){
                 addSparkles(150, 130, 225, 0.05);
@@ -774,6 +859,8 @@ function handlebuildclick(){
 
             gotoscene(scene1);
             stage.removeChild(upperarrow);
+            stage.removeChild(upperplot);
+            stage.removeChild(upperplot.shine);
             //add burst of stars to the completed barracks
             setTimeout( function(){
                 addSparkles(150, 225, 180, 0.05);
@@ -892,7 +979,7 @@ function createciviupdate(thecivilian,targetx,targety,flip){
     return civilianwalker;
 }
 
-/*
+
 function getPosition(event)
 {
     var x = event.rawX;
@@ -900,7 +987,7 @@ function getPosition(event)
 
     console.log("x:" + x + " y:" + y);
 }
-*/
+
 /*
 function handlesmallhitcomplete(){
     var spriteSheet3 = new createjs.SpriteSheet({
