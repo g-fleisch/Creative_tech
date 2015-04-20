@@ -59,10 +59,35 @@
     background-image: url('assets/outroBG.jpg');
     opacity: 0;
 }
+
+@-webkit-keyframes ani-symbol-Iuofx8R9-BkkFCc {
+    0% {
+        -webkit-transform: translate3d(0px, 0px, 0px);
+        opacity: 0;
+    }
+    100% {
+        -webkit-transform: translate3d(0px, 0px, 0px);
+        opacity: 1;
+    }
+}
+li.run .an-symbol-container-b2ZSDZ.run.t-BkkFCc  .an-symbol-Iuofx8R9 {    
+  -webkit-animation-name: ani-symbol-Iuofx8R9-BkkFCc;    
+  -webkit-animation-duration: 0.5s;    
+  -webkit-animation-delay: 0s;    
+  -webkit-animation-fill-mode: both;    
+}
 li.run .an-symbol-container-b2ZSDZ.t-BkkFCc  .an-symbol-Iuofx8R9 {
     -webkit-transform: translate3d(0px, 0px, 0px);
     opacity: 1;
 
+}
+li.run .an-symbol-container-b2ZSDZ.restart.t-BkkFCc  .an-symbol-Iuofx8R9 {
+    -webkit-transform: translate3d(0px, 0px, 0px);
+    opacity: 0;
+
+}
+li.run .an-symbol-container-b2ZSDZ.restart  .an-symbol-Iuofx8R9 {    
+  -webkit-animation-name: none !important;    
 }
 .an-symbol-vDfV9YQ5 {
     -webkit-transform: translate3d(31px, 480px, 0px);
