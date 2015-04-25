@@ -4,6 +4,12 @@ var upperplot, lowerplot, lowerarrow, upperarrow, tutorialarrow;
 var stage, preload, hitpreload, smallpreload, smallestpreload;
 var greetingsimg1, greetingsimg2, tutorialhitarea, tutorialtext, tutorialscreen;
 function init() {
+    var canvas = document.getElementById("testCanvas");
+    canvas.width = 320;
+    canvas.height = 480;
+    // create a new stage and point it at our canvas:
+    stage = new createjs.Stage(canvas);
+
     var scene1manifest = [
         {src: "blank_02.png", id: "emptyplot1"},
         {src: "blank_00.png", id: "emptyplot0"},
@@ -45,10 +51,6 @@ function init() {
     scene3preload.addEventListener("complete", handlescene3load);
     scene3preload.loadManifest(scene3Manifest, true, "assets/");
 
-    // create a new stage and point it at our canvas:
-    stage = new createjs.Stage(document.getElementById("testCanvas"));
-    
-
     scene1 = createscene("scene1");
     scene2 = createscene("scene2");
     scene3 = createscene("scene3");
@@ -83,32 +85,34 @@ function annimateCTA(event) {
 
 function tick(event) {
 
-    // loop through all of the active sparkles on stage:
-    var l = stage.getNumChildren();
-    var m = event.delta / 16;
-    for (var i = l - 1; i > 0; i--) {
-        var sparkle = stage.getChildAt(i);
-        if(sparkle.name == "sparkle"){
+    if (!event.paused) {
+        // loop through all of the active sparkles on stage:
+        var l = stage.getNumChildren();
+        var m = event.delta / 16;
+        for (var i = l - 1; i > 0; i--) {
+            var sparkle = stage.getChildAt(i);
+            if(sparkle.name == "sparkle"){
 
-            // apply gravity and friction
-            sparkle.vY += 0;
-            sparkle.vX *= 1.01;
+                // apply gravity and friction
+                sparkle.vY += 0;
+                sparkle.vX *= 1.01;
 
-            // update position, scale, and alpha:
-            sparkle.x += sparkle.vX * m;
-            sparkle.y += sparkle.vY * m;
-            //sparkle.scaleX = sparkle.scaleY = sparkle.scaleX + sparkle.vS * m;
+                // update position, scale, and alpha:
+                sparkle.x += sparkle.vX * m;
+                sparkle.y += sparkle.vY * m;
+                //sparkle.scaleX = sparkle.scaleY = sparkle.scaleX + sparkle.vS * m;
 
-            if (
-                sparkle.y > sparkle.startingy + 10 || sparkle.y < sparkle.startingy - 15 || sparkle.x > sparkle.startingx + 20 || sparkle.x < sparkle.startingx - 20 
-                ) {
-                sparkle.alpha += sparkle.vA * m;
-            }
+                if (
+                    sparkle.y > sparkle.startingy + 10 || sparkle.y < sparkle.startingy - 15 || sparkle.x > sparkle.startingx + 20 || sparkle.x < sparkle.startingx - 20 
+                    ) {
+                    sparkle.alpha += sparkle.vA * m;
+                }
 
-            if (
-                sparkle.alpha <= 0 || sparkle.y > sparkle.startingy + 25 || sparkle.y < sparkle.startingy - 30 || sparkle.x > sparkle.startingx + 40 || sparkle.x < sparkle.startingx - 40 
-                ) {
-                stage.removeChildAt(i);
+                if (
+                    sparkle.alpha <= 0 || sparkle.y > sparkle.startingy + 25 || sparkle.y < sparkle.startingy - 30 || sparkle.x > sparkle.startingx + 40 || sparkle.x < sparkle.startingx - 40 
+                    ) {
+                    stage.removeChildAt(i);
+                }
             }
         }
     }
@@ -131,9 +135,11 @@ function createscene(theid){
             for (i = 0; i < this.children.length; i++){
                 stage.removeChild(this.children[i]);
             }
+            /*
             for (i = 0; i < this.intervals.length; i++){
                 window.clearInterval(this.intervals[i]);
             }
+            */
         },
         addimage: function(theimage){
             this.children.push(theimage);
