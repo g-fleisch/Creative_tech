@@ -64,15 +64,21 @@ function init() {
     activescene = scene1;
     gotoscene(scene1);
 
-    createjs.Ticker.timingMode = createjs.Ticker.RAF;
+    createjs.Ticker.timingMode = createjs.Ticker.RAF_SYNCHED;
+    createjs.Ticker.setFPS(30);
     createjs.Ticker.addEventListener("tick", tick);
 
     //stage.addEventListener("mousedown", getPosition, false);
 }
 init();
 
+function tick(event){
+    // draw the updates to stage
+    stage.update(event);
+}
 
-function tick(event) {
+
+function sparkletick(event) {
     // loop through all of the active sparkles on stage:
     var l = stage.getNumChildren();
     var m = event.delta / 16;
@@ -104,7 +110,7 @@ function tick(event) {
     }
 
     // draw the updates to stage
-    stage.update(event);
+    //stage.update(event);
 }
 
 function createscene(theid){
@@ -255,7 +261,7 @@ function handlescene1load(){
                 } else if (theshine.alpha <= 0.1){
                    shinepulsedirection = 1;
                 }
-                theshine.alpha += shinepulsedirection * 0.22;
+                theshine.alpha += shinepulsedirection * 0.06;
                
                 stage.update();
            };
@@ -271,7 +277,7 @@ function handlescene1load(){
                 } else if (theshine.alpha <= 0.1){
                    shinepulsedirection = 1;
                 }
-                theshine.alpha += shinepulsedirection * 0.22;
+                theshine.alpha += shinepulsedirection * 0.06;
                
                 stage.update();
            };
@@ -287,37 +293,42 @@ function handlescene1load(){
                 } else if (thearrow.scaleX <= 0.6){
                    arrowscaledirection = 1;
                 }
-                thearrow.scaleX += arrowscaledirection * 0.01;
-                thearrow.scaleY += arrowscaledirection * 0.01;
+                thearrow.scaleX += arrowscaledirection * 0.0075;
+                thearrow.scaleY += arrowscaledirection * 0.0075;
                
                 stage.update();
            };
     })(lowerarrow)
 
-    var arrowpulseupper = (function (aarrow) {
+    var arrowpulseupper = (function (event,aarrow) {
            var arrowscaledirection = 1;
            var thearrow = aarrow;
-           return function ()
+           return function (event)
            {
+                //console.log(event.delta/1000);
                 if(thearrow.scaleX >= 0.7){
                    arrowscaledirection = -1;
                 } else if (thearrow.scaleX <= 0.6){
                    arrowscaledirection = 1;
                 }
-                thearrow.scaleX += arrowscaledirection * 0.01;
-                thearrow.scaleY += arrowscaledirection * 0.01;
+                thearrow.scaleX += arrowscaledirection * 0.007;
+                thearrow.scaleY += arrowscaledirection * 0.007;
                
                 stage.update();
            };
-    })(upperarrow)
+    })(event,upperarrow)
 
-    setInterval(shinepulselower, 50);
-    setInterval(shinepulseupper, 50);
+    createjs.Ticker.addEventListener("tick", shinepulselower);
+    createjs.Ticker.addEventListener("tick", shinepulseupper);
+    //setInterval(shinepulselower, 50);
+    //setInterval(shinepulseupper, 50);
     scene1.addinterval(shinepulselower);
     scene1.addinterval(shinepulseupper);
 
-    setInterval(arrowpulselower, 51);
-    setInterval(arrowpulseupper, 49);
+    createjs.Ticker.addEventListener("tick", arrowpulselower);
+    createjs.Ticker.addEventListener("tick", arrowpulseupper);
+    //setInterval(arrowpulselower, 51);
+    //setInterval(arrowpulseupper, 49);
     scene1.addinterval(arrowpulselower);
     scene1.addinterval(arrowpulseupper);
 
@@ -392,13 +403,14 @@ function handlescene1load(){
                 } else if (thearrow.scaleX <= 0.6){
                    arrowscaledirection = 1;
                 }
-                thearrow.scaleX += arrowscaledirection * 0.01;
-                thearrow.scaleY += arrowscaledirection * 0.01;
+                thearrow.scaleX += arrowscaledirection * 0.007;
+                thearrow.scaleY += arrowscaledirection * 0.007;
                
                 stage.update();
            };
     })(tutorialarrow)
-    setInterval(tutorialpulse, 50);
+    createjs.Ticker.addEventListener("tick", tutorialpulse);
+    //setInterval(tutorialpulse, 50);
     stage.addChild(tutorialarrow);
 }
 
@@ -436,10 +448,10 @@ function handletutorialclickfinal(){
     upperplot.shine.hitArea = plothitarea;
     lowerplot.shine.hitArea = plothitarea;
 
-    upperplot.addEventListener("click", handleupperclick, false);
-    lowerplot.addEventListener("click", handlelowerclick, false);
-    upperplot.shine.addEventListener("click", handleupperclick, false);
-    lowerplot.shine.addEventListener("click", handlelowerclick, false);
+    upperplot.addEventListener("mousedown", handleupperclick, false);
+    lowerplot.addEventListener("mousedown", handlelowerclick, false);
+    upperplot.shine.addEventListener("mousedown", handleupperclick, false);
+    lowerplot.shine.addEventListener("mousedown", handlelowerclick, false);
 }
 
 function handleupperclick(event)
@@ -515,15 +527,17 @@ function handlescene2load(){
                 } else if (thearrow.scaleX <= 0.6){
                    arrowscaledirection = 1;
                 }
-                thearrow.scaleX += arrowscaledirection * 0.01;
-                thearrow.scaleY += arrowscaledirection * 0.01;
+                thearrow.scaleX += arrowscaledirection * 0.007;
+                thearrow.scaleY += arrowscaledirection * 0.007;
                
                 stage.update();
            };
     })(scene2arrow)
 
-    setInterval(shadowpulsebarracks, 50);
-    setInterval(arrowpulse, 50);
+    createjs.Ticker.addEventListener("tick", shadowpulsebarracks);
+    createjs.Ticker.addEventListener("tick", arrowpulse);
+    //setInterval(shadowpulsebarracks, 50);
+    //setInterval(arrowpulse, 50);
     scene2.addinterval(shadowpulsebarracks);
     scene2.addinterval(arrowpulse);
 
@@ -598,15 +612,17 @@ function handlescene3load(){
                 } else if (thearrow.scaleX <= 0.6){
                    arrowscaledirection = 1;
                 }
-                thearrow.scaleX += arrowscaledirection * 0.01;
-                thearrow.scaleY += arrowscaledirection * 0.01;
+                thearrow.scaleX += arrowscaledirection * 0.008;
+                thearrow.scaleY += arrowscaledirection * 0.008;
                
                 stage.update();
            };
     })(scene3arrow)
 
-    setInterval(shadowpulsebuild, 50);
-    setInterval(arrowpulse3, 50);
+    createjs.Ticker.addEventListener("tick", shadowpulsebuild);
+    createjs.Ticker.addEventListener("tick", arrowpulse3);
+    //setInterval(shadowpulsebuild, 50);
+    //setInterval(arrowpulse3, 50);
     scene3.addinterval(shadowpulsebuild);
     scene3.addinterval(arrowpulse3);
 
@@ -689,9 +705,11 @@ function handlebuildclick(){
 
             var civilianwalker2 = createciviupdate(civiwalkingsprite2, 200, 280, "left");
 
-            setInterval(civilianwalker1, 50);
+            createjs.Ticker.addEventListener("tick", civilianwalker1);
+            //setInterval(civilianwalker1, 50);
             scene3.addinterval(civilianwalker1);
-            setInterval(civilianwalker2, 50);
+            createjs.Ticker.addEventListener("tick", civilianwalker2);
+            //setInterval(civilianwalker2, 50);
             scene3.addinterval(civilianwalker2);
 
             lowerplot.removeEventListener("mousedown", handlelowerclick, false);
@@ -702,9 +720,13 @@ function handlebuildclick(){
             stage.removeChild(lowerplot);
             stage.removeChild(lowerplot.shine);
             //add burst of stars to the completed barracks
+            createjs.Ticker.addEventListener("tick", sparkletick);
             setTimeout( function(){
                 addSparkles(150, 130, 225, 0.05);
             },100);
+            setTimeout( function(){
+                createjs.Ticker.removeEventListener("tick", sparkletick);
+            },2000);
         }
         if(activeplot == "upper"){
         
@@ -765,9 +787,11 @@ function handlebuildclick(){
 
             var civilianwalker2 = createciviupdate(civiwalkingsprite2, 260, 155, "left");
 
-            setInterval(civilianwalker1, 50);
+            createjs.Ticker.addEventListener("tick", civilianwalker1);
+            //setInterval(civilianwalker1, 50);
             scene3.addinterval(civilianwalker1);
-            setInterval(civilianwalker2, 50);
+            createjs.Ticker.addEventListener("tick", civilianwalker2);
+            //setInterval(civilianwalker2, 50);
             scene3.addinterval(civilianwalker2);
 
             upperplot.removeEventListener("mousedown", handleupperclick, false);
@@ -778,9 +802,13 @@ function handlebuildclick(){
             stage.removeChild(upperplot);
             stage.removeChild(upperplot.shine);
             //add burst of stars to the completed barracks
+            createjs.Ticker.addEventListener("tick", sparkletick);
             setTimeout( function(){
                 addSparkles(150, 225, 180, 0.05);
             },100);
+            setTimeout( function(){
+                createjs.Ticker.removeEventListener("tick", sparkletick);
+            },2000);
         }
         if(numberbuilt == 2){
             stage.removeChild(lowerarrow);
@@ -822,7 +850,7 @@ function addSparkles(count, x, y, speed) {
 
         // set up velocities:
         var a = Math.PI * 2 * Math.random();
-        var v = (Math.random() + 0.03) * 40 * speed;
+        var v = (Math.random() + 0.13) * 40 * speed;
         sparkle.vX = Math.cos(a) * v;
         sparkle.vY = Math.sin(a) * v;
         sparkle.vS = (Math.random() - 0.5) * 0.2; // scale
