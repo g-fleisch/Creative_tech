@@ -108,9 +108,6 @@ function sparkletick(event) {
             }
         }
     }
-
-    // draw the updates to stage
-    //stage.update(event);
 }
 
 function createscene(theid){
@@ -300,12 +297,11 @@ function handlescene1load(){
            };
     })(lowerarrow)
 
-    var arrowpulseupper = (function (event,aarrow) {
+    var arrowpulseupper = (function (aarrow) {
            var arrowscaledirection = 1;
            var thearrow = aarrow;
-           return function (event)
+           return function ()
            {
-                //console.log(event.delta/1000);
                 if(thearrow.scaleX >= 0.7){
                    arrowscaledirection = -1;
                 } else if (thearrow.scaleX <= 0.6){
@@ -316,7 +312,7 @@ function handlescene1load(){
                
                 stage.update();
            };
-    })(event,upperarrow)
+    })(upperarrow)
 
     createjs.Ticker.addEventListener("tick", shinepulselower);
     createjs.Ticker.addEventListener("tick", shinepulseupper);
