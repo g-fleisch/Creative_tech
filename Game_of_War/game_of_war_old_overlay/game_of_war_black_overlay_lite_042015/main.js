@@ -64,25 +64,21 @@ function init() {
     activescene = scene1;
     gotoscene(scene1);
 
-    createjs.Ticker.timingMode = createjs.Ticker.RAF;
-    createjs.Ticker.addEventListener("tick", tick);
+    //createjs.Ticker.timingMode = createjs.Ticker.RAF_SYNCHED;
+    //createjs.Ticker.setFPS(30);
+    //createjs.Ticker.addEventListener("tick", tick);
 
     //stage.addEventListener("mousedown", getPosition, false);
 }
-
 init();
 
-/*
-function annimateCTA(event) {
-    if(CTA.y < 0){
-        CTA.y += 1.0;
-    } else {
-        createjs.Ticker.removeEventListener("tick", annimateCTA);
-    }
-} */
+function tick(event){
+    // draw the updates to stage
+    stage.update(event);
+}
 
-function tick(event) {
 
+function sparkletick(event) {
     // loop through all of the active sparkles on stage:
     var l = stage.getNumChildren();
     var m = event.delta / 16;
@@ -100,7 +96,7 @@ function tick(event) {
             //sparkle.scaleX = sparkle.scaleY = sparkle.scaleX + sparkle.vS * m;
 
             if (
-                sparkle.y > sparkle.startingy + 10 || sparkle.y < sparkle.startingy - 15 || sparkle.x > sparkle.startingx + 20 || sparkle.x < sparkle.startingx - 20 
+                sparkle.y > sparkle.startingy + 6 || sparkle.y < sparkle.startingy - 6 || sparkle.x > sparkle.startingx + 6 || sparkle.x < sparkle.startingx - 6
                 ) {
                 sparkle.alpha += sparkle.vA * m;
             }
@@ -112,9 +108,6 @@ function tick(event) {
             }
         }
     }
-
-    // draw the updates to stage
-    stage.update(event);
 }
 
 function createscene(theid){
@@ -149,36 +142,9 @@ function gotoscene(thescene){
     activescene.obliterate();
     activescene = thescene;
     thescene.draw();
+    stage.update();
     /*stage.addChild(CTA);*/
 }
-
-/*
-var CTA;
-function createCTA(){
-    CTA = new createjs.Container();
-    // Create a new Text object, and position it on stage:
-    txt = new createjs.Text("Skip the Demo to Download", "20px Arial", "#FFF");
-    txt.x = 40;
-    txt.y = 10;
-    //txt.outline = true;
-    CTA.addChild(txt);
-
-    // this shape will be the background for the text:
-    shape = new createjs.Shape();
-    shape.x = txt.x;
-    shape.y = txt.y;
-    shape.rotation = txt.rotation;
-    shape.graphics.clear().beginFill("#2788a8").drawRect(-40, -10, 320, 40);
-    CTA.addChildAt(shape, 0);
-
-    CTA.x = 0;
-    CTA.y = -40;
-
-    stage.addChild(CTA);
-    createjs.Ticker.addEventListener("tick", annimateCTA);
-}
-*/
-
 
 function handlescene1load(){
     var spriteSheet4 = new createjs.SpriteSheet({
@@ -293,7 +259,7 @@ function handlescene1load(){
                 } else if (theshine.alpha <= 0.1){
                    shinepulsedirection = 1;
                 }
-                theshine.alpha += shinepulsedirection * 0.22;
+                theshine.alpha += shinepulsedirection * 0.06;
                
                 stage.update();
            };
@@ -309,55 +275,11 @@ function handlescene1load(){
                 } else if (theshine.alpha <= 0.1){
                    shinepulsedirection = 1;
                 }
-                theshine.alpha += shinepulsedirection * 0.22;
+                theshine.alpha += shinepulsedirection * 0.06;
                
                 stage.update();
            };
     })(upperplotshine)
-
-    /*
-
-    var lowerplotshadow =  new createjs.Shadow("#ffdd00", 0, 0, 5);
-    var upperplotshadow =  new createjs.Shadow("#ffdd00", 0, 0, 5);
-    lowerplotshadow.scaleX = lowerplotshadow.scaleY = 0.3;
-    upperplotshadow.scaleX = upperplotshadow.scaleY = 0.3;
-
-    lowerplot.shadow = lowerplotshadow;
-    upperplot.shadow = upperplotshadow;
-
-    var shadowpulselower = (function (ashadow) {
-           var shadowblurdirection = 1;
-           var theshadow = ashadow;
-           return function ()
-           {
-                if(theshadow.blur >= 20){
-                   shadowblurdirection = -1;
-                } else if (theshadow.blur <= 0){
-                   shadowblurdirection = 1;
-                }
-                theshadow.blur += shadowblurdirection;
-               
-                stage.update();
-           };
-    })(lowerplotshadow)
-
-    var shadowpulseupper = (function (ashadow) {
-           var shadowblurdirection = 1;
-           var theshadow = ashadow;
-           return function ()
-           {
-                if(theshadow.blur >= 20){
-                   shadowblurdirection = -1;
-                } else if (theshadow.blur <= 0){
-                   shadowblurdirection = 1;
-                }
-                theshadow.blur += shadowblurdirection;
-               
-                stage.update();
-           };
-    })(upperplotshadow)
-
-    */
 
     var arrowpulselower = (function (aarrow) {
            var arrowscaledirection = 1;
@@ -369,8 +291,8 @@ function handlescene1load(){
                 } else if (thearrow.scaleX <= 0.6){
                    arrowscaledirection = 1;
                 }
-                thearrow.scaleX += arrowscaledirection * 0.01;
-                thearrow.scaleY += arrowscaledirection * 0.01;
+                thearrow.scaleX += arrowscaledirection * 0.0075;
+                thearrow.scaleY += arrowscaledirection * 0.0075;
                
                 stage.update();
            };
@@ -386,25 +308,24 @@ function handlescene1load(){
                 } else if (thearrow.scaleX <= 0.6){
                    arrowscaledirection = 1;
                 }
-                thearrow.scaleX += arrowscaledirection * 0.01;
-                thearrow.scaleY += arrowscaledirection * 0.01;
+                thearrow.scaleX += arrowscaledirection * 0.007;
+                thearrow.scaleY += arrowscaledirection * 0.007;
                
                 stage.update();
            };
     })(upperarrow)
 
-    //setInterval(shadowpulselower, 49);
-    //setInterval(shadowpulseupper, 51);
-    //scene1.addinterval(shadowpulselower);
-    //scene1.addinterval(shadowpulseupper);
-
-    setInterval(shinepulselower, 50);
-    setInterval(shinepulseupper, 50);
+    createjs.Ticker.addEventListener("tick", shinepulselower);
+    createjs.Ticker.addEventListener("tick", shinepulseupper);
+    //setInterval(shinepulselower, 50);
+    //setInterval(shinepulseupper, 50);
     scene1.addinterval(shinepulselower);
     scene1.addinterval(shinepulseupper);
 
-    setInterval(arrowpulselower, 51);
-    setInterval(arrowpulseupper, 49);
+    createjs.Ticker.addEventListener("tick", arrowpulselower);
+    createjs.Ticker.addEventListener("tick", arrowpulseupper);
+    //setInterval(arrowpulselower, 51);
+    //setInterval(arrowpulseupper, 49);
     scene1.addinterval(arrowpulselower);
     scene1.addinterval(arrowpulseupper);
 
@@ -479,36 +400,37 @@ function handlescene1load(){
                 } else if (thearrow.scaleX <= 0.6){
                    arrowscaledirection = 1;
                 }
-                thearrow.scaleX += arrowscaledirection * 0.01;
-                thearrow.scaleY += arrowscaledirection * 0.01;
+                thearrow.scaleX += arrowscaledirection * 0.007;
+                thearrow.scaleY += arrowscaledirection * 0.007;
                
                 stage.update();
            };
     })(tutorialarrow)
-    setInterval(tutorialpulse, 50);
+    createjs.Ticker.addEventListener("tick", tutorialpulse);
+    //setInterval(tutorialpulse, 50);
     stage.addChild(tutorialarrow);
+    stage.update();
+}
+
+function mixpaneltrack(message){
+    //" - session end"
+    if(typeof mixpanel == 'object' && typeof mixpanel != 'undefined') {
+        mixpanel.track(environment + message, properties);
+    }
 }
 
 function handletutorialclick(){
-/*
-    stage.removeChild(greetingsimg1);
-    //load the tutorial image and text
-    var tutorialimg2 = new Image();
-    tutorialimg2.src = "assets/barracksTextBox.png";
-    greetingsimg2 = new createjs.Bitmap(tutorialimg2);
-    greetingsimg2.x = 0;
-    greetingsimg2.y = 120;
-    greetingsimg2.scaleX = greetingsimg2.scaleY = 1;
-    stage.addChild(greetingsimg2);
-    */
+    mixpaneltrack(" - continue 1");
 
     tutorialtext.text = "First, let me show you how to build some Barracks. A thriving city will need Soldiers!";
-    //stage.addChild(tutorialtext);
-    //stage.addChild(tutorialhitarea);
+
+    tutorialhitarea.removeEventListener("click", handletutorialclick);
     tutorialhitarea.addEventListener("click", handletutorialclickfinal, false);
 }
 
 function handletutorialclickfinal(){
+    mixpaneltrack(" - continue 2");
+
     stage.removeChild(greetingsimg1);
     stage.removeChild(tutorialtext);
     stage.removeChild(tutorialhitarea);
@@ -524,14 +446,16 @@ function handletutorialclickfinal(){
     upperplot.shine.hitArea = plothitarea;
     lowerplot.shine.hitArea = plothitarea;
 
-    upperplot.addEventListener("click", handleupperclick, false);
-    lowerplot.addEventListener("click", handlelowerclick, false);
-    upperplot.shine.addEventListener("click", handleupperclick, false);
-    lowerplot.shine.addEventListener("click", handlelowerclick, false);
+    upperplot.addEventListener("mousedown", handleupperclick, false);
+    lowerplot.addEventListener("mousedown", handlelowerclick, false);
+    upperplot.shine.addEventListener("mousedown", handleupperclick, false);
+    lowerplot.shine.addEventListener("mousedown", handlelowerclick, false);
+    stage.update();
 }
 
 function handleupperclick(event)
 {
+    mixpaneltrack(" - upperplot clicked");
     //stage.addChild(backgroundbitmap);
     if(activescene.id == "scene1"){
         activeplot = "upper";
@@ -543,6 +467,7 @@ function handleupperclick(event)
 
 function handlelowerclick(event)
 {
+    mixpaneltrack(" - lowerplot clicked");
     //stage.addChild(backgroundbitmap);
     if(activescene.id == "scene1"){
         activeplot = "lower";
@@ -601,15 +526,17 @@ function handlescene2load(){
                 } else if (thearrow.scaleX <= 0.6){
                    arrowscaledirection = 1;
                 }
-                thearrow.scaleX += arrowscaledirection * 0.01;
-                thearrow.scaleY += arrowscaledirection * 0.01;
+                thearrow.scaleX += arrowscaledirection * 0.007;
+                thearrow.scaleY += arrowscaledirection * 0.007;
                
                 stage.update();
            };
     })(scene2arrow)
 
-    setInterval(shadowpulsebarracks, 50);
-    setInterval(arrowpulse, 50);
+    createjs.Ticker.addEventListener("tick", shadowpulsebarracks);
+    createjs.Ticker.addEventListener("tick", arrowpulse);
+    //setInterval(shadowpulsebarracks, 50);
+    //setInterval(arrowpulse, 50);
     scene2.addinterval(shadowpulsebarracks);
     scene2.addinterval(arrowpulse);
 
@@ -622,9 +549,11 @@ function handlescene2load(){
     scene2.addimage(scene2backgroundbitmap);
     scene2.addimage(scene2barracksbox);
     scene2.addimage(scene2arrow);
+    stage.update();
 }
 
 function handlebarracksclick(){
+    mixpaneltrack(" - barracks selected");
     if(activescene.id == "scene2"){
         gotoscene(scene3);
     } else {
@@ -683,15 +612,17 @@ function handlescene3load(){
                 } else if (thearrow.scaleX <= 0.6){
                    arrowscaledirection = 1;
                 }
-                thearrow.scaleX += arrowscaledirection * 0.01;
-                thearrow.scaleY += arrowscaledirection * 0.01;
+                thearrow.scaleX += arrowscaledirection * 0.008;
+                thearrow.scaleY += arrowscaledirection * 0.008;
                
                 stage.update();
            };
     })(scene3arrow)
 
-    setInterval(shadowpulsebuild, 50);
-    setInterval(arrowpulse3, 50);
+    createjs.Ticker.addEventListener("tick", shadowpulsebuild);
+    createjs.Ticker.addEventListener("tick", arrowpulse3);
+    //setInterval(shadowpulsebuild, 50);
+    //setInterval(arrowpulse3, 50);
     scene3.addinterval(shadowpulsebuild);
     scene3.addinterval(arrowpulse3);
 
@@ -706,11 +637,13 @@ function handlescene3load(){
     scene3.addimage(scene3backgroundbitmap);
     scene3.addimage(scene3BuildButton);
     scene3.addimage(scene3arrow);
+    stage.update();
 }
 
 function handlebuildclick(){
     stage.removeChild(finalbuildbutton);
     numberbuilt += 1;
+    mixpaneltrack(" - barracks built: "+numberbuilt);
     setTimeout( function(){
         if(activeplot == "lower"){
             //add a barracks based on which plot we clicked to the scene
@@ -773,9 +706,11 @@ function handlebuildclick(){
 
             var civilianwalker2 = createciviupdate(civiwalkingsprite2, 200, 280, "left");
 
-            setInterval(civilianwalker1, 50);
+            createjs.Ticker.addEventListener("tick", civilianwalker1);
+            //setInterval(civilianwalker1, 50);
             scene3.addinterval(civilianwalker1);
-            setInterval(civilianwalker2, 50);
+            createjs.Ticker.addEventListener("tick", civilianwalker2);
+            //setInterval(civilianwalker2, 50);
             scene3.addinterval(civilianwalker2);
 
             lowerplot.removeEventListener("mousedown", handlelowerclick, false);
@@ -786,9 +721,13 @@ function handlebuildclick(){
             stage.removeChild(lowerplot);
             stage.removeChild(lowerplot.shine);
             //add burst of stars to the completed barracks
+            createjs.Ticker.addEventListener("tick", sparkletick);
             setTimeout( function(){
-                addSparkles(150, 130, 225, 0.05);
+                addSparkles(100, 130, 225, 0.05);
             },100);
+            setTimeout( function(){
+                createjs.Ticker.removeEventListener("tick", sparkletick);
+            },2000);
         }
         if(activeplot == "upper"){
         
@@ -849,9 +788,11 @@ function handlebuildclick(){
 
             var civilianwalker2 = createciviupdate(civiwalkingsprite2, 260, 155, "left");
 
-            setInterval(civilianwalker1, 50);
+            createjs.Ticker.addEventListener("tick", civilianwalker1);
+            //setInterval(civilianwalker1, 50);
             scene3.addinterval(civilianwalker1);
-            setInterval(civilianwalker2, 50);
+            createjs.Ticker.addEventListener("tick", civilianwalker2);
+            //setInterval(civilianwalker2, 50);
             scene3.addinterval(civilianwalker2);
 
             upperplot.removeEventListener("mousedown", handleupperclick, false);
@@ -862,20 +803,24 @@ function handlebuildclick(){
             stage.removeChild(upperplot);
             stage.removeChild(upperplot.shine);
             //add burst of stars to the completed barracks
+            createjs.Ticker.addEventListener("tick", sparkletick);
             setTimeout( function(){
-                addSparkles(150, 225, 180, 0.05);
+                addSparkles(100, 225, 180, 0.05);
             },100);
+            setTimeout( function(){
+                createjs.Ticker.removeEventListener("tick", sparkletick);
+            },2000);
         }
         if(numberbuilt == 2){
             stage.removeChild(lowerarrow);
             stage.removeChild(upperarrow);
             setTimeout( function(){
-                AN.instances.controllers[0].dropOutro(0);
-                //postviewStageAppearHelper();
+                postviewStageAppearHelper();
             },1000);
             //controller.dropOverlay(1500);
         }
-    }, 400);
+    }, 100);
+    stage.update();
 }
 
 function addSparkles(count, x, y, speed) {
@@ -894,8 +839,8 @@ function addSparkles(count, x, y, speed) {
         var sparkle = sparklesprite.clone();
 
         sparkle.name = "sparkle";
-        sparkle.startingx = x;
-        sparkle.startingy = y;
+        sparkle.startingx = x + Math.random() * 5;
+        sparkle.startingy = y + Math.random() * 5;
 
         // set display properties:
         sparkle.x = x;
@@ -906,8 +851,8 @@ function addSparkles(count, x, y, speed) {
         sparkle.scaleX = sparkle.scaleY = Math.random() + 0.3;
 
         // set up velocities:
-        var a = Math.PI * 2 * Math.random();
-        var v = (Math.random() + 0.03) * 40 * speed;
+        var a = Math.PI * 6 * Math.random();
+        var v = (Math.random() + 0.13) * 25 * speed;
         sparkle.vX = Math.cos(a) * v;
         sparkle.vY = Math.sin(a) * v;
         sparkle.vS = (Math.random() - 0.5) * 0.2; // scale
@@ -919,6 +864,7 @@ function addSparkles(count, x, y, speed) {
         // add to the display list:
         stage.addChild(sparkle);
     }
+    stage.update();
 }
 
 function createciviupdate(thecivilian,targetx,targety,flip){
@@ -978,6 +924,7 @@ function createciviupdate(thecivilian,targetx,targety,flip){
        };
     })(thecivilian, targetx, targety)
     return civilianwalker;
+    stage.update();
 }
 
 
@@ -988,143 +935,3 @@ function getPosition(event)
 
     console.log("x:" + x + " y:" + y);
 }
-
-/*
-function handlesmallhitcomplete(){
-    var spriteSheet3 = new createjs.SpriteSheet({
-        framerate: 30,
-        "images": [
-        smallpreload.getResult("smallhit000"),
-        smallpreload.getResult("smallhit001"),
-        smallpreload.getResult("smallhit002")
-        ],
-        "frames": {"regX": 0, "height": 456, "count": 4, "regY": 0, "width": 356},
-        // define two animations, run (loops, 1.5x speed) and jump (returns to run):
-        "animations": {
-            "run": [0, 2, "jump", 0.5]
-        }
-    });
-
-    var powerranger = new createjs.Sprite(spriteSheet3, "run");
-    powerranger.x = 400;
-    powerranger.y = 0;
-    powerranger.scaleX = powerranger.scaleY = 0.25;
-
-    scene1.children.push(powerranger);
-
-    // Add Grant to the stage, and add it as a listener to Ticker to get updates each frame.
-    //stage.addChild(powerranger);
-}
-
-function handlehitcomplete(){
-    var spriteSheet2 = new createjs.SpriteSheet({
-        framerate: 60,
-        "images": [
-        hitpreload.getResult("hit000"),
-        hitpreload.getResult("hit001"),
-        hitpreload.getResult("hit002"),
-        hitpreload.getResult("hit003"),
-        hitpreload.getResult("hit004"),
-        hitpreload.getResult("hit005"),
-        hitpreload.getResult("hit006"),
-        hitpreload.getResult("hit007"),
-        hitpreload.getResult("hit008"),
-        hitpreload.getResult("hit009"),
-        hitpreload.getResult("hit010"),
-        hitpreload.getResult("hit011")
-        ],
-        "frames": {"regX": 82, "height": 340, "count": 12, "regY": 0, "width": 348},
-        // define two animations, run (loops, 1.5x speed) and jump (returns to run):
-        "animations": {
-            "run": [0, 11, "jump", 0.5]
-        }
-    });
-
-    var teddy1 = new createjs.Sprite(spriteSheet2, "run");
-    teddy1.x = 300;
-    teddy1.y = 200;
-    teddy1.scaleX = teddy1.scaleY = 0.25;
-
-    scene1.children.push(teddy1);
-
-    // Add Grant to the stage, and add it as a listener to Ticker to get updates each frame.
-    //stage.addChild(teddy1);
-}
-
-function handleComplete() {
-    // Define a spritesheet. Note that this data was exported by Zoë.
-    var spriteSheet1 = new createjs.SpriteSheet({
-            framerate: 30,
-            //"images": ["EaselJS-master/_assets/art/spritesheet_grant.png"],
-            "images": [
-            preload.getResult("attack000"),
-            preload.getResult("attack001"),
-            preload.getResult("attack002"),
-            preload.getResult("attack003"),
-            preload.getResult("attack004"),
-            preload.getResult("attack005"),
-            preload.getResult("attack006"),
-            preload.getResult("attack007"),
-            preload.getResult("attack008"),
-            preload.getResult("attack009"),
-            preload.getResult("attack010"),
-
-            preload.getResult("attack011"),
-            preload.getResult("attack012"),
-            preload.getResult("attack013"),
-            preload.getResult("attack014"),
-            preload.getResult("attack015"),
-            preload.getResult("attack016"),
-            preload.getResult("attack017"),
-            preload.getResult("attack018"),
-            preload.getResult("attack019"),
-            preload.getResult("attack020"),
-
-            preload.getResult("attack021"),
-            preload.getResult("attack022"),
-            preload.getResult("attack023"),
-            preload.getResult("attack024"),
-            preload.getResult("attack025"),
-            preload.getResult("attack026"),
-            preload.getResult("attack027"),
-            preload.getResult("attack028"),
-            preload.getResult("attack029"),
-            preload.getResult("attack030"),
-
-            preload.getResult("attack031"),
-            preload.getResult("attack032"),
-            preload.getResult("attack033"),
-            preload.getResult("attack034"),
-            preload.getResult("attack035"),
-            preload.getResult("attack036"),
-            preload.getResult("attack037"),
-            preload.getResult("attack038"),
-            preload.getResult("attack039"),
-            preload.getResult("attack040"),
-
-            preload.getResult("attack041"),
-            preload.getResult("attack042"),
-            preload.getResult("attack043"),
-            preload.getResult("attack044")
-            ],
-            "frames": {"regX": 0, "height": 864, "count": 64, "regY": 0, "width": 864},
-            // define two animations, run (loops, 1.5x speed) and jump (returns to run):
-            "animations": {
-                "run": [0, 40, "jump", 0.8],
-                "jump": [0, 40, "hop", 1.0],
-                "hop": [0, 40, "run", 1.5]
-            }
-    });
-
-    var grant = new createjs.Sprite(spriteSheet1, "run");
-    grant.x = 0;
-    grant.y = 0;
-    grant.scaleX = grant.scaleY = 0.25;
-
-    scene1.children.push(grant);
-    scene2.children.push(grant);
-
-    // Add Grant to the stage, and add it as a listener to Ticker to get updates each frame.
-    //stage.addChild(grant);
-}
-*/

@@ -64,9 +64,9 @@ function init() {
     activescene = scene1;
     gotoscene(scene1);
 
-    createjs.Ticker.timingMode = createjs.Ticker.RAF_SYNCHED;
-    createjs.Ticker.setFPS(30);
-    createjs.Ticker.addEventListener("tick", tick);
+    //createjs.Ticker.timingMode = createjs.Ticker.RAF_SYNCHED;
+    //createjs.Ticker.setFPS(30);
+    //createjs.Ticker.addEventListener("tick", tick);
 
     //stage.addEventListener("mousedown", getPosition, false);
 }
@@ -96,7 +96,7 @@ function sparkletick(event) {
             //sparkle.scaleX = sparkle.scaleY = sparkle.scaleX + sparkle.vS * m;
 
             if (
-                sparkle.y > sparkle.startingy + 10 || sparkle.y < sparkle.startingy - 15 || sparkle.x > sparkle.startingx + 20 || sparkle.x < sparkle.startingx - 20 
+                sparkle.y > sparkle.startingy + 6 || sparkle.y < sparkle.startingy - 6 || sparkle.x > sparkle.startingx + 6 || sparkle.x < sparkle.startingx - 6
                 ) {
                 sparkle.alpha += sparkle.vA * m;
             }
@@ -142,6 +142,7 @@ function gotoscene(thescene){
     activescene.obliterate();
     activescene = thescene;
     thescene.draw();
+    stage.update();
     /*stage.addChild(CTA);*/
 }
 
@@ -408,6 +409,7 @@ function handlescene1load(){
     createjs.Ticker.addEventListener("tick", tutorialpulse);
     //setInterval(tutorialpulse, 50);
     stage.addChild(tutorialarrow);
+    stage.update();
 }
 
 function mixpaneltrack(message){
@@ -448,6 +450,7 @@ function handletutorialclickfinal(){
     lowerplot.addEventListener("mousedown", handlelowerclick, false);
     upperplot.shine.addEventListener("mousedown", handleupperclick, false);
     lowerplot.shine.addEventListener("mousedown", handlelowerclick, false);
+    stage.update();
 }
 
 function handleupperclick(event)
@@ -546,6 +549,7 @@ function handlescene2load(){
     scene2.addimage(scene2backgroundbitmap);
     scene2.addimage(scene2barracksbox);
     scene2.addimage(scene2arrow);
+    stage.update();
 }
 
 function handlebarracksclick(){
@@ -633,6 +637,7 @@ function handlescene3load(){
     scene3.addimage(scene3backgroundbitmap);
     scene3.addimage(scene3BuildButton);
     scene3.addimage(scene3arrow);
+    stage.update();
 }
 
 function handlebuildclick(){
@@ -718,7 +723,7 @@ function handlebuildclick(){
             //add burst of stars to the completed barracks
             createjs.Ticker.addEventListener("tick", sparkletick);
             setTimeout( function(){
-                addSparkles(150, 130, 225, 0.05);
+                addSparkles(100, 130, 225, 0.05);
             },100);
             setTimeout( function(){
                 createjs.Ticker.removeEventListener("tick", sparkletick);
@@ -800,7 +805,7 @@ function handlebuildclick(){
             //add burst of stars to the completed barracks
             createjs.Ticker.addEventListener("tick", sparkletick);
             setTimeout( function(){
-                addSparkles(150, 225, 180, 0.05);
+                addSparkles(100, 225, 180, 0.05);
             },100);
             setTimeout( function(){
                 createjs.Ticker.removeEventListener("tick", sparkletick);
@@ -814,7 +819,8 @@ function handlebuildclick(){
             },1000);
             //controller.dropOverlay(1500);
         }
-    }, 400);
+    }, 100);
+    stage.update();
 }
 
 function addSparkles(count, x, y, speed) {
@@ -833,8 +839,8 @@ function addSparkles(count, x, y, speed) {
         var sparkle = sparklesprite.clone();
 
         sparkle.name = "sparkle";
-        sparkle.startingx = x;
-        sparkle.startingy = y;
+        sparkle.startingx = x + Math.random() * 5;
+        sparkle.startingy = y + Math.random() * 5;
 
         // set display properties:
         sparkle.x = x;
@@ -845,8 +851,8 @@ function addSparkles(count, x, y, speed) {
         sparkle.scaleX = sparkle.scaleY = Math.random() + 0.3;
 
         // set up velocities:
-        var a = Math.PI * 2 * Math.random();
-        var v = (Math.random() + 0.13) * 40 * speed;
+        var a = Math.PI * 6 * Math.random();
+        var v = (Math.random() + 0.13) * 25 * speed;
         sparkle.vX = Math.cos(a) * v;
         sparkle.vY = Math.sin(a) * v;
         sparkle.vS = (Math.random() - 0.5) * 0.2; // scale
@@ -858,6 +864,7 @@ function addSparkles(count, x, y, speed) {
         // add to the display list:
         stage.addChild(sparkle);
     }
+    stage.update();
 }
 
 function createciviupdate(thecivilian,targetx,targety,flip){
@@ -917,6 +924,7 @@ function createciviupdate(thecivilian,targetx,targety,flip){
        };
     })(thecivilian, targetx, targety)
     return civilianwalker;
+    stage.update();
 }
 
 
