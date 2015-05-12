@@ -12,7 +12,7 @@ function preload() {
     game.load.image('starfield', 'assets/starfield.png');
     game.load.image('background', 'assets/background2.png');
 */
-    //game.load.spritesheet('invader', 'assets/invader32x32x4.png', 32, 32);
+    game.load.spritesheet('invader', 'assets/invader32x32x4.png', 32, 32);
     game.load.spritesheet('kaboom', 'assets/explode.png', 128, 128);
 
     var bulletLoad = new Image();
@@ -25,9 +25,7 @@ function preload() {
 
     var invadeLoad = new Image();
     invadeLoad.src = 'assets/invader32x32x4.png';
-    invadeLoad.x = 5;
-    invadeLoad.y = 6;
-    game.cache.addSpriteSheet('invader', 'assets/invader32x32x4.png', invadeLoad, 32, 32);
+    //game.cache.addSpriteSheet('invader', 'assets/invader32x32x4.png', invadeLoad, 0, 0);
     //game.cache.addSpriteSheet('invader', 'assets/enemy-bullet.png', invadeLoad, 1, 1);
 
     var playerLoad = new Image();
