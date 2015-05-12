@@ -13,7 +13,7 @@ function preload() {
     game.load.image('background', 'assets/background2.png');
 */
     //game.load.spritesheet('invader', 'assets/invader32x32x4.png', 32, 32);
-    game.load.spritesheet('kaboom', 'assets/explode.png', 128, 128);
+    //game.load.spritesheet('kaboom', 'assets/explode.png', 128, 128);
 
     var bulletLoad = new Image();
     bulletLoad.src = 'assets/bullet.png';
@@ -25,9 +25,7 @@ function preload() {
 
     var invadeLoad = new Image();
     invadeLoad.src = 'assets/invader32x32x4.png';
-    invadeLoad.x = 5;
-    invadeLoad.y = 6;
-    game.cache.addSpriteSheet('invader', 'assets/invader32x32x4.png', invadeLoad, 32, 32);
+    game.cache.addSpriteSheet('invader', 'assets/invader32x32x4.png', invadeLoad, 4, 4);
     //game.cache.addSpriteSheet('invader', 'assets/enemy-bullet.png', invadeLoad, 1, 1);
 
     var playerLoad = new Image();
@@ -36,7 +34,7 @@ function preload() {
 
     var kaboomLoad = new Image();
     kaboomLoad.src = 'assets/explode.png';
-    //game.cache.addSpriteSheet('kaboom', 'assets/explode.png', kaboomLoad, 0, 0);
+    game.cache.addSpriteSheet('kaboom', 'assets/explode.png', kaboomLoad, 0, 0);
     //game.cache.addSpriteSheet('kaboom', 'assets/enemy-bullet.png', kaboomLoad, 0, 0);
 
     var stafieldLoad = new Image();
@@ -173,7 +171,6 @@ function setupInvader (invader) {
 function descend() {
 
     aliens.y += 10;
-    console.log("WHY");
 
 }
 
@@ -211,11 +208,6 @@ function update() {
         game.physics.arcade.overlap(bullets, aliens, collisionHandler, null, this);
         game.physics.arcade.overlap(enemyBullets, player, enemyHitsPlayer, null, this);
     }
-    else
-    {
-        console.log("dead");
-    }
-
 }
 
 function render() {
