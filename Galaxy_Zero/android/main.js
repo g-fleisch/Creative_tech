@@ -11,7 +11,9 @@ function preload() {
     game.load.spritesheet('kaboom', 'assets/explode.png', 128, 128);
     game.load.image('starfield', 'assets/starfield.png');
     game.load.image('background', 'assets/background2.png');
-    game.load.image('hp', 'assets/hp.png')
+    game.load.image('hp', 'assets/hp.png');
+    game.load.image('topBar', 'assets/topOverlay.png');
+
 
 }
 
@@ -32,6 +34,9 @@ var firingTimer = 0;
 var stateText;
 var livingEnemies = [];
 var oddEvenBullet = 1;
+var deltaShipX;
+var deltaShipY;
+var catchFlag = false;
 
 function create() {
 
@@ -64,6 +69,8 @@ function create() {
     player = game.add.sprite(160, 420, 'ship');
     player.anchor.setTo(0.5, 0.5);
     game.physics.enable(player, Phaser.Physics.ARCADE);
+    //player.inputEnabled = true;
+    //player.input.start(0, true);
 
     //  The baddies!
     aliens = game.add.group();
@@ -71,14 +78,17 @@ function create() {
     aliens.physicsBodyType = Phaser.Physics.ARCADE;
 
     createAliens();
+    spawnBigAlien();
+
+    game.add.sprite(0, 0, 'topBar');
 
     //  The score
-    scoreString = 'Score : ';
-    scoreText = game.add.text(10, 10, scoreString + score, { font: '18px Arial', fill: '#fff' });
+    scoreString = ' ';
+    scoreText = game.add.text(265, 4, scoreString + score, { font: '11px Arial', fill: /* MOST */ '#def' });
 
     //  Lives
     lives = game.add.group();
-    game.add.text(game.world.width - 105, 10, 'Ship Health ', { font: '18px Arial', fill: '#fff' });
+    //game.add.text(game.world.width - 105, 10, 'Ship Health ', { font: '18px Arial', fill: '#fff' });
 
     //  Text
     stateText = game.add.text(game.world.centerX,game.world.centerY,' ', { font: '20px Arial', fill: '#fff' });
@@ -90,7 +100,7 @@ function create() {
         var hp = lives.create(game.world.width - 10 - (20 * i), 10, 'hp');
         hp.anchor.setTo(1, 1);
         hp.angle = 0;
-        hp.alpha = 0.54;
+        hp.alpha = 0.0;
     }
 
     //  An explosion pool
@@ -102,7 +112,26 @@ function create() {
     cursors = game.input.keyboard.createCursorKeys();
     fireButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
     
+    game.input.onDown.add(touchStart);
+    game.input.onUp.add(touchEnd);
 }
+
+function touchStart (){
+
+    deltaShipX = player.x - game.input.activePointer.worldX;
+    deltaShipY = player.y - game.input.activePointer.worldY;
+    console.log(player.x);
+    console.log(player.y);
+    catchFlag = true;
+
+}
+
+function touchEnd (){
+
+    catchFlag = false;
+
+}
+
 
 function createAliens () {
 
@@ -123,10 +152,11 @@ function createAliens () {
 
     //  All this does is basically start the invaders moving. Notice we're moving
     // the Group they belong to, rather than the invaders directly.
-    var tween = game.add.tween(aliens).to( { x: 100 }, 1000, Phaser.Easing.Linear.None, true, 0, 500, true);
+    var tween = game.add.tween(aliens).to( { x: 100 }, 1000, Phaser.Easing.Linear.None, true, 0, 0, true);
 
     //  When the tween loops it calls descend
     tween.onLoop.add(descend, this);
+
 }
 
 function setupInvader (invader) {
@@ -143,86 +173,72 @@ function descend() {
 
 }
 
+function spawnBigAlien() {
+
+    bigAlien = game.add.sprite( 160, -20, 'ship');
+    bigAlien.anchor.setTo(0.5, 0.5);
+    game.physics.enable(bigAlien, Phaser.Physics.ARCADE);
+    bigAlien.rotation = 3.1415;
+    bigAlien.bossHP = 20;
+
+    var bossDescend = game.add.tween(bigAlien)
+        .to( { y: 300 }, 800, "Sine", false, 4000, 0, false)
+        .to( { x: 280 }, 3000, "Sine", false, 0, 0, false)
+        .to( { x: 35 }, 6000, "Sine", false, 0, -1, true)
+        .start();
+}
+
 function update() {
 
     //  Scroll the background
     starfield.tilePosition.y += 4;
 
-    if (player.alive)
-    {
-        //  Reset the player, then check for movement keys
-        player.body.velocity.setTo(0, 0);
+    if (catchFlag){
 
-        if (cursors.left.isDown)
-        {
-            player.body.velocity.x = -200;
-        }
-        else if (cursors.right.isDown)
-        {
-            player.body.velocity.x = 200;
-        }
+       player.x = deltaShipX + game.input.activePointer.worldX;
+       player.y = deltaShipY + game.input.activePointer.worldY;
 
+    }
 
-        if (cursors.up.isDown)
-        {
-            player.body.velocity.y = -200;
-        }
-        else if (cursors.down.isDown)
-        {
-            player.body.velocity.y = 200;
-        }
-
-        //Player bounding box in frame
-        if (player.body.x < 5)
-        {
-            player.body.x = 5;
-        }
-
-        if (player.body.x > 250)
-        {
-            player.body.x = 250;
-        }
-
-        if (player.body.y < 80)
-        {
-            player.body.y = 80;
-        }
-
-        if (player.body.y > 418)
-        {
-            player.body.y = 418;
-        }
-
-        //  Firing?
-        if (game.time.now > 2500) //(fireButton.isDown)
-        {
+    if (player.alive) {
+    //Auto fire at 2.5 into the game
+        if (game.time.now > 2500) {
             fireBullet();
         }
-
-        if (game.time.now > firingTimer)
-        {
+    //Enemies fire timer
+        if (game.time.now > firingTimer) {
             enemyFires(); 
         }
-
-        //  Run collision
+    //  Run collision
         game.physics.arcade.overlap(bullets, aliens, collisionHandler, null, this);
+        game.physics.arcade.overlap(bullets, bigAlien, collisionBoss, null, this);
         game.physics.arcade.overlap(enemyBullets, player, enemyHitsPlayer, null, this);
     }
 }
 
 function render() {
-
-/*    
-    for (var i = 0; i < aliens.length; i++)
-    {
-         game.debug.body(aliens.children[i]);
-    }
-    game.debug.body(player); 
-*/
-
 }
 
-function collisionHandler (bullet, alien) {
+function collisionBoss(bigBoss, bullet) {
+    //bullet.kill();
+    bullet.kill();
+
+    score += 5;
+    scoreText.text = scoreString + score;
+
+    bigBoss.bossHP -= 1;
+    console.log(bigBoss.bossHP);
+    if (bigBoss.bossHP < 1) {
+        score += 1000;
+        scoreText.text = scoreString + score;
+        bigBoss.kill();
+        var explosion = explosions.getFirstExists(false);
+        explosion.reset(bigBoss.body.x+32, bigBoss.body.y+32);
+        explosion.play('kaboom', 30, false, true);
+    }
+}
+
+function collisionHandler (alien, bullet) {
 
     //  When a bullet hits an alien we kill them both
     bullet.kill();
@@ -243,11 +259,11 @@ function collisionHandler (bullet, alien) {
         scoreText.text = scoreString + score;
 
         enemyBullets.callAll('kill',this);
-        stateText.text = " You Won, \n Click to restart";
-        stateText.visible = true;
+        //stateText.text = " You Won, \n Click to restart";
+        //stateText.visible = true;
 
         //the "click to restart" handler
-        game.input.onTap.addOnce(restart,this);
+        //game.input.onTap.addOnce(restart,this);
     }
 
 }
@@ -313,27 +329,35 @@ function enemyFires () {
 
 }
 
+var bulletCycle = 1;
+
 function fireBullet () {
 
     //  To avoid them being allowed to fire too fast we set a time limit
-    if (game.time.now > bulletTime)
-    {
+    if (game.time.now > bulletTime) {
         //  Grab the first bullet we can from the pool
         bullet = bullets.getFirstExists(false);
-        //console.log(bullet);
-
-        if (bullet)
-        {
-            //  Grab the first bullet we can from the pool
-            bullet = bullets.getFirstExists(false);
-            //  And fire it
-            bullet.reset(player.x, player.y + 8);
-            bullet.body.velocity.y = -500;
-            bulletTime = game.time.now + 140;
-           // oddEvenBullet = 1.5;
-            console.log(oddEvenBullet);
+        if (bullet) {
+            //  And fire one bullet
+            if (bulletCycle == 1) {
+                bullet.reset(player.x, player.y + 8);
+                bullet.body.velocity.y = -600;
+                bulletCycle = 2;
+            }
+            else if (bulletCycle == 2) {
+            //Fire Two Bullets  
+                bullet.reset(player.x-12, player.y + 8);
+                bullet.body.velocity.y = -600;
+                bullet = bullets.getFirstExists(false);
+                if (bullet) {
+                    // And fire it
+                    bullet.reset(player.x+12, player.y + 8);
+                    bullet.body.velocity.y = -600;
+                }
+                bulletCycle = 1;
+            }
         }
-
+        bulletTime = game.time.now + 100;
     }
 
 }
