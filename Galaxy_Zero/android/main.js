@@ -4,7 +4,6 @@ var game = new Phaser.Game(320, 480, Phaser.AUTO, 'phaser-example',
 
 function preload() {
 
-//game.load.crossOrigin = 'anonymous';
     game.load.image('bullet', 'assets/bullet.png');
     game.load.image('enemyBullet', 'assets/enemy-bullet.png');
     game.load.spritesheet('invader', 'assets/invader32x32x4.png', 32, 32);
@@ -13,36 +12,6 @@ function preload() {
     game.load.image('starfield', 'assets/starfield.png');
     game.load.image('background', 'assets/background2.png');
     game.load.image('hp', 'assets/hp.png')
-    //game.load.spritesheet('invader', 'assets/invader32x32x4.png', 32, 32);
-    //game.load.spritesheet('kaboom', 'assets/explode.png', 128, 128);
-/*
-    var bulletLoad = new Image();
-    bulletLoad.src = 'assets/bullet.png';
-    game.cache.addImage('bullet', 'assets/bullet.png', bulletLoad);
-  
-    var enemyBulletLoad = new Image();
-    enemyBulletLoad.src = 'assets/enemy-bullet.png';
-    game.cache.addImage('enemyBullet', 'assets/enemy-bullet.png', enemyBulletLoad);
-
-    var invadeLoad = new Image();
-    invadeLoad.src = 'assets/invader32x32x4.png';
-    game.cache.addSpriteSheet('invader', 'assets/invader32x32x4.png', invadeLoad, 32, 32, 4, 0, 0);
-
-    var playerLoad = new Image();
-    playerLoad.src = 'assets/player.png';
-    game.cache.addImage('ship', 'assets/player.png', playerLoad);
-
-    var kaboomLoad = new Image();
-    kaboomLoad.src = 'assets/explode.png';
-    game.cache.addSpriteSheet('kaboom', 'assets/explode.png', kaboomLoad, 128, 128, 16, 0, 0);
-
-    var stafieldLoad = new Image();
-    stafieldLoad.src = 'assets/starfield.png';
-    game.cache.addImage('starfield', 'assets/starfield.png', stafieldLoad);
-
-    var bgLoad = new Image();
-    bgLoad.src = 'assets/background2.png';
-*/
 
 }
 
