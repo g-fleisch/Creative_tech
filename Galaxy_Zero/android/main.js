@@ -42,6 +42,7 @@ var powerUp;
 var seekSpeed = 20;
 var powerUpNext = false;
 var endGame = true;
+var firing = true;
 
 function create() {
 
@@ -249,7 +250,7 @@ function update() {
         }
     });
 */
-    if (catchFlag){
+    if (catchFlag && firing){
         var newX = deltaShipX + game.input.activePointer.worldX;
         var newY = deltaShipY + game.input.activePointer.worldY
 
@@ -277,7 +278,7 @@ function update() {
 
     if (player.alive) {
     //Auto fire at 2.5 into the game
-        if (game.time.now > 2500) {
+        if (game.time.now > 2500 && firing) {
             fireBullet();
         }
     //Enemies fire timer
@@ -405,9 +406,42 @@ function collisionBossman(bigBoss, bullet) {
             explosion.reset(bigBoss.body.x+32, bigBoss.body.y+32);
             explosion.play('kaboom', 30, false, true);
             postviewStageAppearHelper();
+            firing = false;
             endGame = false;
         }
     }
+}
+
+function blinkRed(thisGuy) {
+
+for (i=0; i<6; i++){
+    if (thisGuy.tint == 0xFFFFFF){
+        thisGuy.tint = 0xFF0000;
+//        sleep(20);
+    }
+    else{
+        thisGuy.tint = 0xFFFFFF;
+    }
+}
+/*
+        var blinkDelay = 0;
+
+        setTimeout(function(){  
+            thisGuy.tint = 0xFF2222;
+        }, blinkDelay); 
+
+        setTimeout(function(){    
+            thisGuy.tint = 0xF1423F;
+        }, blinkDelay + 100);
+
+
+        setTimeout(function(){  
+            thisGuy.tint = 0xFF2222;
+        }, blinkDelay + 200); 
+
+        setTimeout(function(){    
+            thisGuy.tint = 0xF1423F;
+        }, blinkDelay + 300); */
 }
 
 function collisionHandler (alien, bullet) {
@@ -444,8 +478,8 @@ function collisionHandler (alien, bullet) {
 function enemyHitsPlayer (player,bullet) {
     
     bullet.kill();
+    blinkRed(player);
 
-    
     //  And create an explosion :)
     var explosion = explosions.getFirstExists(false);
     explosion.reset(player.body.x+32, player.body.y+12);
@@ -510,7 +544,6 @@ function timeline(){
     setTimeout(function(){    
         createAliens();  
     },timelinetime+800); 
-
     timelinetime += 800;
 
 
@@ -523,49 +556,40 @@ function timeline(){
 
  
     setTimeout(function(){    
-
         firstAliens()
-
     }, timelinetime+ 1000)
     timelinetime += 1000;
     
     setTimeout(function(){    
-
         firstAliens()
-        powerUpNext = true;
-
     }, timelinetime+ 1000)
     timelinetime += 1000;
 
     setTimeout(function(){       
-
         firstAliens()
-
+        powerUpNext = true;
     }, timelinetime+ 1000)
     timelinetime += 1000;
 
     setTimeout(function(){    
         createAliens();  
     },timelinetime+1500); 
-
     timelinetime += 1500;
 
     setTimeout(function(){    
-
         spawnBigAlien();
-
     }, timelinetime+ 1000)
     timelinetime += 1000;
-
+ 
     setTimeout(function(){ 
-           
-    if (endGame){
-        postviewStageAppearHelper();
-    }
-
-
+        firing = false;
     }, timelinetime+ 13000)
     timelinetime += 13000;
+       
+    setTimeout(function(){ 
+        if (endGame){ postviewStageAppearHelper(); }
+    }, timelinetime+ 1000)
+    timelinetime += 1000;
 
 }
 
