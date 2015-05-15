@@ -300,10 +300,35 @@ function update() {
 function enemyCrashPlayer(player, littleEnemy) {
     littleEnemy.kill();
 
+    score += 20;
+    scoreText.text = scoreString + score;
+    
+    //  And create an explosion :)
+    var explosion = explosions.getFirstExists(false);
+    explosion.reset(alien.body.x, alien.body.y);
+    explosion.play('kaboom', 30, false, true);
+
+    if (powerUpNext) {
+        spawnPowerUp(alien.x,alien.y);
+    }
+
+    if (aliens.countLiving() == 0) {
+        score += 1000;
+        scoreText.text = scoreString + score;
+        enemyBullets.callAll('kill',this);
+        if (score >1000 && score < 1155){
+            timeline();
+            //spawnPowerUp(alien.
+        }
+    }
 }
 
 function bigEnemyCrashPlayer(bigEnemy, player) {
     bigEnemy.kill();
+    blinkRed(player);
+    var explosion = explosions.getFirstExists(false);
+    explosion.reset(bigEnemy.body.x, bigEnemy.body.y);
+    explosion.play('kaboom', 30, false, true);
 
 }
 
@@ -341,26 +366,23 @@ function collisionBossman(bigBoss, bullet) {
 function blink(thisGuy) {
 
     game.time.events.repeat(100,8, function(){
-        var thebro = thisGuy;
-        if(thebro.alpha == 0.5){
-            thebro.alpha = 1;
+        if(thisGuy.alpha == 0.5){
+            thisGuy.alpha = 1;
         }
-        else if(thebro.alpha == 1){
-            thebro.alpha = 0.5;
+        else if(thisGuy.alpha == 1){
+            thisGuy.alpha = 0.5;
         }
     }, this);
-
 }
 
-function blinkRed(thisGuy) {
+function blinkRed(thatGuy) {
     game.time.events.repeat(10,2, function(){
-        var thebro = thisGuy;
-        
-        if(thebro.tint == 0xFFFFFF){
-            thebro.tint = 0xFF0000;
+       
+        if(thatGuy.tint == 0xFFFFFF){
+            thatGuy.tint = 0xFF0000;
         }
-        else if(thebro.tint == 0xFF0000){
-            thebro.tint = 0xFFFFFF;
+        else if(thatGuy.tint == 0xFF0000){
+            thatGuy.tint = 0xFFFFFF;
         }
     }, this);
 }
@@ -464,6 +486,7 @@ function timeline(){
 
     setTimeout(function(){    
         createAliens();  
+
     },timelinetime+800); 
     timelinetime += 800;
 
