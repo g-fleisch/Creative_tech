@@ -322,6 +322,7 @@ function collisionBossman(bigBoss, bullet) {
         bullet.kill();
 
         bigBoss.bossHP -= 1;
+        blinkRed(bigBoss);
 
         if (bigBoss.bossHP < 1) {
             score += 1000;
@@ -349,6 +350,19 @@ function blink(thisGuy) {
         }
     }, this);
 
+}
+
+function blinkRed(thisGuy) {
+    game.time.events.repeat(10,2, function(){
+        var thebro = thisGuy;
+        
+        if(thebro.tint == 0xFFFFFF){
+            thebro.tint = 0xFF0000;
+        }
+        else if(thebro.tint == 0xFF0000){
+            thebro.tint = 0xFFFFFF;
+        }
+    }, this);
 }
 
 function collisionHandler (alien, bullet) {
@@ -445,7 +459,6 @@ function resetBullet (bullet) {
 }
 
 function timeline(){
-    spawnBigAlien();
     
     var timelinetime = 0; 
 
@@ -454,14 +467,12 @@ function timeline(){
     },timelinetime+800); 
     timelinetime += 800;
 
-
     setTimeout(function(){    
         
         //DROP OVERLAY FUNCTION FOR THE DIALOG BOX (SENCHA CODE)
 
     }, timelinetime+3000)
     timelinetime += 3000;
-
  
     setTimeout(function(){    
         firstAliens()
