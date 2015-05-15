@@ -384,6 +384,8 @@ function blinkRed(thatGuy) {
         else if(thatGuy.tint == 0xFF0000){
             thatGuy.tint = 0xFFFFFF;
         }
+
+        //fdgfdgf
     }, this);
 }
 
@@ -401,7 +403,7 @@ function collisionHandler (alien, bullet) {
         var explosion = explosions.getFirstExists(false);
         explosion.reset(alien.body.x, alien.body.y);
         explosion.play('kaboom', 30, false, true);
-
+`
         if (powerUpNext) {
             spawnPowerUp(alien.x,alien.y);
         }
