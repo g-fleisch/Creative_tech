@@ -313,82 +313,7 @@ function powerUpPlayer(powerUp, player) {
 }
 
 function render() {
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
+
 }
 
 function collisionBossman(bigBoss, bullet) {
@@ -412,40 +337,22 @@ function collisionBossman(bigBoss, bullet) {
     }
 }
 
-function blinkRed(thisGuy) {
+function blink(thisGuy) {
 
-for (i=0; i<6; i++){
-    if (thisGuy.tint == 0xFFFFFF){
-        thisGuy.tint = 0xFF0000;
-//        sleep(20);
-    }
-    else{
-        thisGuy.tint = 0xFFFFFF;
-    }
-}
-/*
-        var blinkDelay = 0;
+    game.time.events.repeat(100,8, function(){
+        var thebro = thisGuy;
+        if(thebro.alpha == 0.5){
+            thebro.alpha = 1;
+        }
+        else if(thebro.alpha == 1){
+            thebro.alpha = 0.5;
+        }
+    }, this);
 
-        setTimeout(function(){  
-            thisGuy.tint = 0xFF2222;
-        }, blinkDelay); 
-
-        setTimeout(function(){    
-            thisGuy.tint = 0xF1423F;
-        }, blinkDelay + 100);
-
-
-        setTimeout(function(){  
-            thisGuy.tint = 0xFF2222;
-        }, blinkDelay + 200); 
-
-        setTimeout(function(){    
-            thisGuy.tint = 0xF1423F;
-        }, blinkDelay + 300); */
 }
 
 function collisionHandler (alien, bullet) {
-    if (alien.body.y > 30) {
+    if (alien.body.y > 20) {
         //  When a bullet hits an alien we kill them both
         bullet.kill();
         alien.kill();
@@ -478,7 +385,7 @@ function collisionHandler (alien, bullet) {
 function enemyHitsPlayer (player,bullet) {
     
     bullet.kill();
-    blinkRed(player);
+    blink(player);
 
     //  And create an explosion :)
     var explosion = explosions.getFirstExists(false);
@@ -538,6 +445,7 @@ function resetBullet (bullet) {
 }
 
 function timeline(){
+    spawnBigAlien();
     
     var timelinetime = 0; 
 
