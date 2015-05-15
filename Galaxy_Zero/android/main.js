@@ -364,7 +364,6 @@ function collisionBossman(bigBoss, bullet) {
 }
 
 function blink(thisGuy) {
-
     game.time.events.repeat(100,8, function(){
         if(thisGuy.alpha == 0.5){
             thisGuy.alpha = 1;
@@ -384,6 +383,55 @@ function blinkRed(thatGuy) {
         else if(thatGuy.tint == 0xFF0000){
             thatGuy.tint = 0xFFFFFF;
         }
+//
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         //fdgfdgf
     }, this);
