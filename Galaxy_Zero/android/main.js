@@ -490,7 +490,7 @@ function timeline(){
     timelinetime += 800;
 
     setTimeout(function(){    
-        dialogappearhelper();
+        
         //DROP OVERLAY FUNCTION FOR THE DIALOG BOX (SENCHA CODE)
 
     }, timelinetime+3000)
@@ -530,6 +530,7 @@ function timeline(){
     setTimeout(function(){ 
         if (endGame){ postviewStageAppearHelper(); }
     }, timelinetime+ 1000)
+    timelinetime += 1000;
 
 }
 
