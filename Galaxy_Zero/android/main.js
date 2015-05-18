@@ -360,7 +360,7 @@ function collisionBossman(bigBoss, bullet) {
     if (bigBoss.body.y > 30) {
         bullet.kill();
 
-        bigBoss.bossHP -= 0.1;
+        bigBoss.bossHP -= 1;
         blinkRed(bigBoss);
 
         if (bigBoss.bossHP < 1) {
@@ -503,26 +503,25 @@ function timeline(){
     },timelinetime+800); 
     timelinetime += 800;
 
-    setTimeout(function(){    
-        
-        //DROP OVERLAY FUNCTION FOR THE DIALOG BOX (SENCHA CODE)
-
+    setTimeout(function(){
+    //DROP OVERLAY FUNCTION FOR THE DIALOG BOX (SENCHA CODE)
+    dialogappearhelper();
     }, timelinetime+3000)
     timelinetime += 3000;
  
     setTimeout(function(){    
         firstAliens()
-    }, timelinetime+ 1000)
-    timelinetime += 1000;
+    }, timelinetime + 4000)
+    timelinetime += 4000;
     
     setTimeout(function(){    
         firstAliens()
+        powerUpNext = true;
     }, timelinetime+ 1000)
     timelinetime += 1000;
 
     setTimeout(function(){       
         firstAliens()
-        powerUpNext = true;
     }, timelinetime+ 1000)
     timelinetime += 1000;
 
@@ -533,8 +532,8 @@ function timeline(){
 
     setTimeout(function(){    
         spawnBigAlien();
-    }, timelinetime+ 1000)
-    timelinetime += 1000;
+    }, timelinetime+ 500)
+    timelinetime += 500;
  
     setTimeout(function(){ 
         firing = false;
