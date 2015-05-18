@@ -305,12 +305,14 @@ function enemyCrashPlayer(player, littleEnemy) {
     
     //  And create an explosion :)
     var explosion = explosions.getFirstExists(false);
-    explosion.reset(alien.body.x, alien.body.y);
+    explosion.reset(littleEnemy.body.x, littleEnemy.body.y);
     explosion.play('kaboom', 30, false, true);
 
     if (powerUpNext) {
-        spawnPowerUp(alien.x,alien.y);
+        spawnPowerUp(littleEnemy.x,littleEnemy.y);
     }
+
+    blink(player);
 
     if (aliens.countLiving() == 0) {
         score += 1000;
@@ -324,11 +326,23 @@ function enemyCrashPlayer(player, littleEnemy) {
 }
 
 function bigEnemyCrashPlayer(bigEnemy, player) {
-    bigEnemy.kill();
+
+     bigEnemy.bossHP -= 0.25;
+        blinkRed(bigEnemy);
+
+        if (bigEnemy.bossHP < 1) {
+            score += 1000;
+            scoreText.text = scoreString + score;
+            bigEnemy.kill();
+            var explosion = explosions.getFirstExists(false);
+            explosion.reset(bigEnemy.body.x+32, bigEnemy.body.y+32);
+            explosion.play('kaboom', 30, false, true);
+            postviewStageAppearHelper();
+            firing = false;
+            endGame = false;
+        }
+
     blinkRed(player);
-    var explosion = explosions.getFirstExists(false);
-    explosion.reset(bigEnemy.body.x, bigEnemy.body.y);
-    explosion.play('kaboom', 30, false, true);
 
 }
 
@@ -346,7 +360,7 @@ function collisionBossman(bigBoss, bullet) {
     if (bigBoss.body.y > 30) {
         bullet.kill();
 
-        bigBoss.bossHP -= 1;
+        bigBoss.bossHP -= 0.1;
         blinkRed(bigBoss);
 
         if (bigBoss.bossHP < 1) {
@@ -384,9 +398,7 @@ function blinkRed(thatGuy) {
             thatGuy.tint = 0xFFFFFF;
         }
 //
-
-
-
+ 
 
 
 
@@ -451,7 +463,7 @@ function collisionHandler (alien, bullet) {
         var explosion = explosions.getFirstExists(false);
         explosion.reset(alien.body.x, alien.body.y);
         explosion.play('kaboom', 30, false, true);
-`
+
         if (powerUpNext) {
             spawnPowerUp(alien.x,alien.y);
         }
