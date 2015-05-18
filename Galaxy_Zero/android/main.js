@@ -342,7 +342,7 @@ function bigEnemyCrashPlayer(bigEnemy, player) {
             endGame = false;
         }
 
-    blinkRed(player);
+    blink(player);
 
 }
 
