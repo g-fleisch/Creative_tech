@@ -397,55 +397,6 @@ function blinkRed(thatGuy) {
         else if(thatGuy.tint == 0xFF0000){
             thatGuy.tint = 0xFFFFFF;
         }
-//
- 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        //fdgfdgf
     }, this);
 }
 
