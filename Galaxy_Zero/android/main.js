@@ -543,7 +543,4 @@ function timeline(){
     setTimeout(function(){ 
         if (endGame){ postviewStageAppearHelper(); }
     }, timelinetime+ 1000)
-    timelinetime += 1000;
-
 }
-
