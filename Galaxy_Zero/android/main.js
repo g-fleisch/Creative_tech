@@ -28,24 +28,6 @@ var powerUpNext = false;
 var endGame = true;
 var firing = true;
 
-function preload() {
-
-        game.load.image('HQbullet', 'assets/enemy-bullet.png');
-
-    game.load.image('bullet', 'assets/bullet.png');
-    game.load.image('enemyBullet', 'assets/enemy-bullet.png');
-    game.load.spritesheet('invader', 'assets/invader32x32x4.png', 32, 32);
-    game.load.image('ship', 'assets/ship.png');
-    game.load.spritesheet('kaboom', 'assets/explode.png', 128, 128);
-    game.load.image('starfield', 'assets/starfield.png');
-    game.load.image('background', 'assets/background2.png');
-    game.load.image('hp', 'assets/hp.png');
-    game.load.image('topBar', 'assets/topOverlay.png');
-    game.load.image('powerUp', 'assets/powerUp.png');    
-    game.load.image('puBullet', 'assets/puBullet.png');
-    game.load.image('enemyShip', 'assets/enemyShip.png');
-
-}
 
 function create() {
 
@@ -87,6 +69,8 @@ function create() {
     player = game.add.sprite(screenWidth/2, screenHeight-60, 'ship');
     player.anchor.setTo(0.5, 0.5);
     game.physics.enable(player, Phaser.Physics.ARCADE);
+    player.body.setSize(20,20,0,0);
+    
     //player.inputEnabled = true;
     //player.input.start(0, true);
 
@@ -208,6 +192,7 @@ function spawnBigAlien() {
     bigAlien.moveUp();
     bigAlien.anchor.setTo(0.5, 0.5);
     game.physics.enable(bigAlien, Phaser.Physics.ARCADE);
+    bigAlien.body.setSize(32,32,0,0);
     bigAlien.rotation = 3.1415;
     bigAlien.bossHP = 25;
 
@@ -352,6 +337,9 @@ function powerUpPlayer(powerUp, player) {
 
 function render() {
 
+   // game.debug.body(player);
+  //  game.debug.body(bigAlien);
+
 }
 
 function collisionBossman(bigBoss, bullet) {
@@ -469,7 +457,7 @@ function fireBullet () {
             }
             else if (bulletCycle == 2) {
             //Fire Two Bullets  
-                bullet.reset(player.x-12, player.y + 8);
+                bullet.reset(player.x-8, player.y + 8);
                 bullet.body.velocity.y = -600;
                 bullet = bullets.getFirstExists(false);
                 if (bullet) {
@@ -480,7 +468,7 @@ function fireBullet () {
                 bulletCycle = 1;
             }
         }
-        bulletTime = game.time.now + 100;
+        bulletTime = game.time.now + 120;
     }
 
 }
@@ -499,7 +487,6 @@ function timeline(){
 
     setTimeout(function(){    
         createAliens();  
-        swaps();
 
     },timelinetime+800); 
     timelinetime += 800;
