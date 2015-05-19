@@ -19,8 +19,7 @@ function preload() {
     game.load.image('background', 'assets/background2.png');
     game.load.image('hp', 'assets/hp.png');
     game.load.image('topBar', 'assets/topOverlay.png');
-    game.load.image('powerUp', 'assets/powerUp.png');
-    game.load.image('hitSpark', 'assets/powerUp.png');   
+    game.load.image('powerUp', 'assets/powerUp.png');    
     game.load.image('puBullet', 'assets/puBullet.png');
     game.load.image('enemyShip', 'assets/enemyShip.png');
 

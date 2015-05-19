@@ -6,7 +6,6 @@ var game = new Phaser.Game(screenWidth, screenHeight, Phaser.AUTO, 'phaser-examp
 var player;
 var aliens;
 var bullets;
-var sparks;
 var bigAlien = null;
 var bulletTime = 0;
 var explosions;
@@ -77,11 +76,6 @@ function create() {
     aliens.enableBody = true;
     aliens.physicsBodyType = Phaser.Physics.ARCADE;
 
-    //  The hiy sparks!
-    sparks = game.add.group();
-    sparks.createMultiple(5, 'hitSpark');
-    sparks.setAll('anchor.x', 0.5);
-    sparks.setAll('anchor.y', 0.5);
 
     firstAliens();
     //createAliens();
@@ -215,16 +209,6 @@ function spawnPowerUp(deadAlienX, deadAlienY) {
     powerUpNext = false;
 }
 
-function spawnSpark(sparksX, sparksY) {
-    var spark = sparks.getFirstExists(false);
-    if (spark) {
-        spark.reset(sparksX, sparksY - 50);
-        setTimeout(function(){
-            spark.kill();
-        },10)
-    }
-}
-
 function update() {
 
     aliens.forEach(function(someAlien){
@@ -355,8 +339,6 @@ function collisionBossman(bigBoss, bullet) {
     //bullet.kill();
     if (bigBoss.body.y > 30) {
         bullet.kill();
-
-        spawnSpark(bullet.x, bullet.y);
 
         bigBoss.bossHP -= 1;
         blinkRed(bigBoss);
