@@ -6,7 +6,6 @@ var game = new Phaser.Game(screenWidth, screenHeight, Phaser.AUTO, 'phaser-examp
 var player;
 var aliens;
 var bullets;
-var sparks;
 var bigAlien = null;
 var bulletTime = 0;
 var explosions;
@@ -28,7 +27,6 @@ var seekSpeed = 20;
 var powerUpNext = false;
 var endGame = true;
 var firing = true;
-
 
 function create() {
 
@@ -70,8 +68,6 @@ function create() {
     player = game.add.sprite(screenWidth/2, screenHeight-60, 'ship');
     player.anchor.setTo(0.5, 0.5);
     game.physics.enable(player, Phaser.Physics.ARCADE);
-    player.body.setSize(20,20,0,0);
-    
     //player.inputEnabled = true;
     //player.input.start(0, true);
 
@@ -80,11 +76,6 @@ function create() {
     aliens.enableBody = true;
     aliens.physicsBodyType = Phaser.Physics.ARCADE;
 
-    //  The hiy sparks!
-    sparks = game.add.group();
-    sparks.createMultiple(5, 'hitSpark');
-    sparks.setAll('anchor.x', 0.5);
-    sparks.setAll('anchor.y', 0.5);
 
     firstAliens();
     //createAliens();
@@ -198,7 +189,6 @@ function spawnBigAlien() {
     bigAlien.moveUp();
     bigAlien.anchor.setTo(0.5, 0.5);
     game.physics.enable(bigAlien, Phaser.Physics.ARCADE);
-    bigAlien.body.setSize(32,32,0,0);
     bigAlien.rotation = 3.1415;
     bigAlien.bossHP = 25;
 
@@ -217,16 +207,6 @@ function spawnPowerUp(deadAlienX, deadAlienY) {
     game.physics.enable(powerUp, Phaser.Physics.ARCADE);
     powerUp.body.velocity.y = 50;
     powerUpNext = false;
-}
-
-function spawnSpark(sparksX, sparksY) {
-    var spark = sparks.getFirstExists(false);
-    if (spark) {
-        spark.reset(sparksX, sparksY - 50);
-        setTimeout(function(){
-            spark.kill();
-        },10)
-    }
 }
 
 function update() {
@@ -353,17 +333,12 @@ function powerUpPlayer(powerUp, player) {
 
 function render() {
 
-   // game.debug.body(player);
-  //  game.debug.body(bigAlien);
-
 }
 
 function collisionBossman(bigBoss, bullet) {
     //bullet.kill();
     if (bigBoss.body.y > 30) {
         bullet.kill();
-
-        spawnSpark(bullet.x, bullet.y);
 
         bigBoss.bossHP -= 1;
         blinkRed(bigBoss);
@@ -442,9 +417,9 @@ function enemyHitsPlayer (player,bullet) {
     blink(player);
 
     //  And create an explosion :)
-    //var explosion = explosions.getFirstExists(false);
-    //explosion.reset(player.body.x+32, player.body.y+12);
-    //explosion.play('kaboom', 45, false, true);
+    var explosion = explosions.getFirstExists(false);
+    explosion.reset(player.body.x+32, player.body.y+12);
+    explosion.play('kaboom', 45, false, true);
 
 }
 
@@ -475,7 +450,7 @@ function fireBullet () {
             }
             else if (bulletCycle == 2) {
             //Fire Two Bullets  
-                bullet.reset(player.x-8, player.y + 8);
+                bullet.reset(player.x-12, player.y + 8);
                 bullet.body.velocity.y = -600;
                 bullet = bullets.getFirstExists(false);
                 if (bullet) {
@@ -486,7 +461,7 @@ function fireBullet () {
                 bulletCycle = 1;
             }
         }
-        bulletTime = game.time.now + 120;
+        bulletTime = game.time.now + 100;
     }
 
 }
@@ -497,7 +472,6 @@ function resetBullet (bullet) {
     bullet.kill();
 
 }
-
 
 function timeline(){
     
@@ -549,5 +523,4 @@ function timeline(){
     setTimeout(function(){ 
         if (endGame){ postviewStageAppearHelper(); }
     }, timelinetime+ 1000)
-
 }

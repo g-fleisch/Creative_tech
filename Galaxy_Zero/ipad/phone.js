@@ -10,7 +10,7 @@ player starting position
 */
 function preload() {
 
-    game.load.image('bullet', 'assets/bullet-iPhone.png');
+    game.load.image('bullet', 'assets/bullet.png');
     game.load.image('enemyBullet', 'assets/enemy-bullet.png');
     game.load.spritesheet('invader', 'assets/invader32x32x4.png', 32, 32);
     game.load.image('ship', 'assets/ship.png');
@@ -19,12 +19,11 @@ function preload() {
     game.load.image('background', 'assets/background2.png');
     game.load.image('hp', 'assets/hp.png');
     game.load.image('topBar', 'assets/topOverlay.png');
-    game.load.image('puBullet', 'assets/puBullet-iPhone.png');
-    game.load.image('powerUp', 'assets/powerUp.png');
-    game.load.image('hitSpark', 'assets/powerUp.png');   
+    game.load.image('powerUp', 'assets/powerUp.png');    
+    game.load.image('puBullet', 'assets/puBullet.png');
     game.load.image('enemyShip', 'assets/enemyShip.png');
 
 }
 
-screenWidth = 320;
 screenHeight = 480;
+screenWidth = 320;
