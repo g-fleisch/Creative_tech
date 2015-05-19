@@ -417,9 +417,9 @@ function enemyHitsPlayer (player,bullet) {
     blink(player);
 
     //  And create an explosion :)
-    var explosion = explosions.getFirstExists(false);
-    explosion.reset(player.body.x+32, player.body.y+12);
-    explosion.play('kaboom', 45, false, true);
+    //var explosion = explosions.getFirstExists(false);
+    //explosion.reset(player.body.x+32, player.body.y+12);
+    //explosion.play('kaboom', 45, false, true);
 
 }
 
@@ -473,6 +473,7 @@ function resetBullet (bullet) {
 
 }
 
+
 function timeline(){
     
     var timelinetime = 0; 
@@ -523,4 +524,5 @@ function timeline(){
     setTimeout(function(){ 
         if (endGame){ postviewStageAppearHelper(); }
     }, timelinetime+ 1000)
+
 }
