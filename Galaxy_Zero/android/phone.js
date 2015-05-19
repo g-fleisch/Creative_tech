@@ -9,7 +9,7 @@ player starting position
 
 */
 function preload() {
-
+	
     game.load.image('bullet', 'assets/bullet.png');
     game.load.image('enemyBullet', 'assets/enemy-bullet.png');
     game.load.spritesheet('invader', 'assets/invader32x32x4.png', 32, 32);
@@ -25,5 +25,5 @@ function preload() {
 
 }
 
-screenHeight = 480;
 screenWidth = 320;
+screenHeight = 480;
