@@ -17,7 +17,7 @@ function preload() {
     game.load.spritesheet('kaboom', 'assets/explode.png', 128, 128);
     game.load.image('starfield', 'assets/starfield.png');
     game.load.image('background', 'assets/background2.png');
-    game.load.image('hp', 'assets/hp.png');
+    game.load.image('hp', 'assets/hp.png');	
     game.load.image('topBar', 'assets/topOverlay.png');
     game.load.image('puBullet', 'assets/puBullet-iPhone.png');
     game.load.image('powerUp', 'assets/powerUp.png');
@@ -26,5 +26,6 @@ function preload() {
 
 }
 
+var fonter = "14px Aero"
 screenWidth = 320;
 screenHeight = 480;

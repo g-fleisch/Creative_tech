@@ -100,7 +100,7 @@ function create() {
 
     //  The score
     scoreString = ' ';
-    scoreText = game.add.text(screenWidth*4/5, screenHeight/100, scoreString + score, { font: '11px Arial', fill: /* MOST */ '#def' });
+    scoreText = game.add.text(screenWidth*4/5, screenWidth/150, scoreString + score, { font: fonter, fill: /* MOST */ '#93FAFF' });
 
     //  Lives
     /*
