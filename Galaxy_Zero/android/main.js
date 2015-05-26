@@ -26,7 +26,7 @@ var powerUp;
 var seekSpeed = 20;
 var powerUpNext = false;
 var endGame = true;
-var firing = true;
+var firing = false;
 var blipDirection = 1; //replace when you do better upgrade icon
 var hpMaskRect;
 var bossHPBar;
@@ -36,7 +36,7 @@ function create() {
     game.physics.startSystem(Phaser.Physics.ARCADE);
 
     //  The scrolling starfield background
-    starfield = game.add.tileSprite(0, 0, 320, 512, 'starfield');
+    starfield = game.add.tileSprite(0, 0, screenWidth, screenHeight, 'starfield');
 
     //  Our bullet group
     bullets = game.add.group();
@@ -69,11 +69,12 @@ function create() {
 
     //  The hero!
     player = game.add.sprite(screenWidth/2, screenHeight-60, 'ship');
-    player.animations.add("fly", [1,2], 10, true);
-    player.play('fly');
+    player.animations.add('notFly', [1], 10, true);
+    player.animations.add("fly", [0,1], 10, true);
+    player.play('notFly');
     player.anchor.setTo(0.5, 0.5);
     game.physics.enable(player, Phaser.Physics.ARCADE);
-    player.body.setSize(32,32,0,0);
+    player.body.setSize(screenWidth/10,screenWidth/10,0,0);
     
     //player.inputEnabled = true;
     //player.input.start(0, true);
@@ -91,6 +92,16 @@ function create() {
     sparks.alpha = 0.9;
 
     firstAliens();
+
+
+    setTimeout(function(){       
+        firing = true;
+        setTimeout(function(){       
+            player.play('fly');
+        },500)
+    }, 1500)
+
+
     //createAliens();
     //spawnBigAlien();
     //spawnPowerUp();
@@ -192,6 +203,8 @@ function spawnBigAlien() {
     bigAlien = game.add.sprite( screenWidth/5, -20, 'enemyShip');
     bigAlien.sendToBack();
     bigAlien.moveUp();
+    bigAlien.width *= 160/screenWidth;///320*64;
+    bigAlien.height *= 160/screenWidth;///320*55;
     bigAlien.anchor.setTo(0.5, 0.5);
     game.physics.enable(bigAlien, Phaser.Physics.ARCADE);
     bigAlien.body.setSize(32,32,0,0);
@@ -226,7 +239,7 @@ function spawnPowerUp(deadAlienX, deadAlienY) {
     powerUp = game.add.sprite( deadAlienX, deadAlienY, 'powerUp');
     powerUp.anchor.setTo(0.5, 0.5);
     game.physics.enable(powerUp, Phaser.Physics.ARCADE);
-    powerUp.body.velocity.y = 50;
+    powerUp.body.velocity.y = 50*screenWidth/320;
 
     powerUpSpinner = game.add.sprite( deadAlienX, deadAlienY, 'powerUpSpinner');
     powerUpSpinner.anchor.setTo(0.5, 0.5);
@@ -252,13 +265,14 @@ function update() {
 
     aliens.forEach(function(someAlien){
         if (someAlien.angularGuy){   
-            game.physics.arcade.velocityFromAngle(someAlien.angle+90, 230, someAlien.body.velocity);
+            game.physics.arcade.velocityFromAngle(someAlien.angle+90, 230*screenWidth/320, someAlien.body.velocity);
         }
     })
 
     //  Scroll the background
-    starfield.tilePosition.y += 2;
+    starfield.tilePosition.y += 2*screenWidth/320;
 
+    //console.log();
 
     if (powerUpBlip) {
         powerUpBlip.x = player.x;
@@ -301,6 +315,10 @@ function update() {
         var newX = deltaShipX + game.input.activePointer.worldX;
         var newY = deltaShipY + game.input.activePointer.worldY
 
+        var deltaX = player.x - newX; 
+
+        console.log(deltaX);
+
         if (newX > screenWidth-player.width/2){
             newX = screenWidth-player.width/2;
         }
@@ -320,7 +338,6 @@ function update() {
         
         deltaShipX = player.x - game.input.activePointer.worldX;
         deltaShipY = player.y - game.input.activePointer.worldY;
-
     }
 
     if (player.alive) {
@@ -437,7 +454,7 @@ function collisionBossman(bigBoss, bullet) {
             bigBoss.kill();
             bossHPBar.kill();
             bossHPBarBackdrop.kill();
-
+        
             var explosion = explosions.getFirstExists(false);
             explosion.reset(bigBoss.body.x+32, bigBoss.body.y+32);
             explosion.play('kaboom', 30, false, true);
@@ -447,6 +464,7 @@ function collisionBossman(bigBoss, bullet) {
                 postviewStageAppearHelper();
                 firing = false;
                 endGame = false;
+                player.play('notFly');
             }, 1500)
                 
 
@@ -625,6 +643,7 @@ function timeline(){
  
     setTimeout(function(){ 
         firing = false;
+        player.play('notFly');
     }, timelinetime+ 9500)
     timelinetime += 9500;
        
