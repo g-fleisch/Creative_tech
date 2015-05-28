@@ -45,6 +45,8 @@ function create() {
     bullets.createMultiple(20, 'bullet');
     bullets.setAll('anchor.x', 0.5);
     bullets.setAll('anchor.y', 1);
+    bullets.setAll('width',screenWidth/320*10);
+    bullets.setAll('height',screenWidth/320*50);
     bullets.setAll('outOfBoundsKill', true);
     bullets.setAll('checkWorldBounds', true);
 
@@ -54,6 +56,8 @@ function create() {
     puBullets.createMultiple(20, 'puBullet');
     puBullets.setAll('anchor.x', 0.5);
     puBullets.setAll('anchor.y', 1);
+    puBullets.setAll('width',screenWidth/320*10);
+    puBullets.setAll('height',screenWidth/320*50);
     puBullets.setAll('outOfBoundsKill', true);
     puBullets.setAll('checkWorldBounds', true);
 
@@ -73,7 +77,9 @@ function create() {
     player.play('fly');
     player.anchor.setTo(0.5, 0.5);
     game.physics.enable(player, Phaser.Physics.ARCADE);
-    player.body.setSize(32,32,0,0);
+    player.body.setSize(screenWidth/10,screenWidth/10,0,0);
+    player.width = screenWidth/320 * 50;
+    player.height = screenWidth/320 *75;
     
     //player.inputEnabled = true;
     //player.input.start(0, true);
@@ -82,7 +88,8 @@ function create() {
     aliens = game.add.group();
     aliens.enableBody = true;
     aliens.physicsBodyType = Phaser.Physics.ARCADE;
-
+    aliens.setAll('width', screenWidth/320*64);
+    aliens.setAll('height', screenWidth/320*84);
     //  The hiy sparks!
     sparks = game.add.group();
     sparks.createMultiple(5, 'hitSpark');
@@ -541,19 +548,19 @@ function fireBullet () {
         if (bullet) {
             //  And fire one bullet
             if (bulletCycle == 1) {
-                bullet.reset(player.x, player.y + 8);
-                bullet.body.velocity.y = -600;
+                bullet.reset(player.x, player.y + 8*screenWidth/320);
+                bullet.body.velocity.y = -600*screenWidth/320;
                 bulletCycle = 2;
             }
             else if (bulletCycle == 2) {
             //Fire Two Bullets  
-                bullet.reset(player.x-8, player.y + 8);
-                bullet.body.velocity.y = -600;
+                bullet.reset(player.x-8*screenWidth/320, player.y + 8*screenWidth/3208);
+                bullet.body.velocity.y = -600*screenWidth/320;
                 bullet = bullets.getFirstExists(false);
                 if (bullet) {
                     // And fire it
                     bullet.reset(player.x+12, player.y + 8);
-                    bullet.body.velocity.y = -600;
+                    bullet.body.velocity.y = -600*screenWidth/320;
                 }
                 bulletCycle = 1;
             }

@@ -29,7 +29,7 @@ var endGame = true;
 var firing = false;
 var blipDirection = 1; //replace when you do better upgrade icon
 var hpMaskRect;
-var bossHPBar;
+var bossHPBar
 
 function create() {
 
@@ -37,6 +37,8 @@ function create() {
 
     //  The scrolling starfield background
     starfield = game.add.tileSprite(0, 0, screenWidth, screenHeight, 'starfield');
+    starfield.width = 320;
+    starfield.height = screenWidth/0.320 * 1.6;
 
     //  Our bullet group
     bullets = game.add.group();
@@ -44,6 +46,8 @@ function create() {
     bullets.physicsBodyType = Phaser.Physics.ARCADE;
     bullets.createMultiple(20, 'bullet');
     bullets.setAll('anchor.x', 0.5);
+    bullets.setAll('width',10);
+    bullets.setAll('height',50);
     bullets.setAll('anchor.y', 1);
     bullets.setAll('outOfBoundsKill', true);
     bullets.setAll('checkWorldBounds', true);
@@ -318,6 +322,11 @@ function update() {
         var deltaX = player.x - newX; 
 
         console.log(deltaX);
+
+        if (deltaX < -5){
+            player.play('bankLeft',10, false)
+
+        }
 
         if (newX > screenWidth-player.width/2){
             newX = screenWidth-player.width/2;

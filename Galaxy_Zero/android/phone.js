@@ -10,8 +10,8 @@ player starting position
 */
 function preload() {
 
-    game.load.image('bullet', 'assets/bullet-iPhone.png');
-    game.load.image('enemyBullet', 'assets/enemy-bullet.png');
+    game.load.image('bullet', 'assets/playerBullet.png');
+    game.load.image('enemyBullet', 'assets/enemyBulletHR.png');
     game.load.image('invader', 'assets/invader-iPhone.png');
     //game.load.spritesheet('invader', 'assets/invader32x32x4.png', 32, 32);
     game.load.spritesheet('ship', 'assets/ship-iPhone-spritesheet.png', 50, 75);
@@ -28,6 +28,8 @@ function preload() {
     game.load.image('dialogBox', 'assets/dialog-iPhone.png');	
     game.load.image('powerUpBlip', 'assets/weaponUpgradeBlip-iPhone.png');	
     game.load.image('hpMask', 'assets/hpMask-iPhone.png');	
+	game.load.spritesheet('shipBank', 'assets/shipBank.png', 110, 106);
+    game.load.image('thrusters', 'assets/thrusters.png');	
 
 }
 

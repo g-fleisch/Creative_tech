@@ -10,7 +10,7 @@ player starting position
 */
 function preload() {
 
-    game.load.image('bullet', 'assets/bullet-iPhone.png');
+    game.load.image('bullet', 'assets/bulletHR.png');
     game.load.image('enemyBullet', 'assets/enemy-bullet.png');
     game.load.image('invader', 'assets/invader-iPhone.png');
     //game.load.spritesheet('invader', 'assets/invader32x32x4.png', 32, 32);
