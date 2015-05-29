@@ -76,7 +76,13 @@ function create() {
 
     //  The hero!
     player = game.add.sprite(screenWidth/2, screenHeight-60, 'ship');
-    player.animations.add("bank", [2,3,4,3,2], 10, false)
+    player.animations.add("bankL2", [1,1], 10, true);
+    player.animations.add("bankL1", [2,2], 10, true);
+    player.animations.add("bank0", [3,3], 10, true);
+    player.animations.add("bankR1", [4,4], 10, true);
+    player.animations.add("bankR2", [5,5], 10, true);
+    player.animations.add("bankR3", [6,6], 10, true);
+
     player.animations.add("fly", [1,0], 10, true);
     player.play('fly');
     player.anchor.setTo(0.5, 0.5);
@@ -324,6 +330,38 @@ function update() {
         else if (newY < screenHeight*.15){
             newY = screenHeight*.15;
         }
+
+
+        if (newX - player.x < -20){
+            player.play("bankL2");
+   //         player.scale = 1;
+        }
+        else if (newX - player.x < -4 && newX - player.x > -20){
+            player.play("bankL1");
+   //         player.scale = 1;
+        }
+    //    else if (player.x - newX < -2 && player.x - newX > -5){
+    //        player.play("bank1");
+    //        player.scale = 1;
+    //    }
+        else if (newX - player.x < 2 && newX - player.x > -4){
+            player.play("bank0");
+    //        player.scale = 1;
+        }
+        else if (newX - player.x > 2 && newX - player.x < 10){
+            player.play("bankR1");
+            player.body.scale = -1;
+        }
+        else if (newX - player.x > 10 && newX - player.x < 20){
+            player.play("bankR2");
+            player.body.scale = -1;
+        }
+        else if (newX - player.x > 20){
+            player.play("bankR3");
+            player.body.scale = -1;
+        }
+      
+        console.log(newX - player.x);
 
         player.x = newX;
         player.y = newY;
