@@ -10,7 +10,7 @@ var sparks;
 var bigAlien = null;
 var bulletTime = 0;
 var explosions;
-var starfield;
+var background;
 var score = 0;
 var scoreString = '';
 var scoreText;
@@ -36,8 +36,9 @@ function create() {
 
     game.physics.startSystem(Phaser.Physics.ARCADE);
 
-    //  The scrolling starfield background
-    starfield = game.add.tileSprite(0, 0, 320, 512, 'starfield');
+    //  The scrolling background
+    background = game.add.tileSprite(0, 0, screenWidth, screenHeight, 'background');
+    background.scale.x = 1.129;
 
     //  Our bullet group
     bullets = game.add.group();
@@ -71,6 +72,7 @@ function create() {
     enemyBullets.setAll('anchor.y', 1);
     enemyBullets.setAll('outOfBoundsKill', true);
     enemyBullets.setAll('checkWorldBounds', true);
+    enemyBullets.callAll('body.setSize', 'body', screenWidth/320*10, screenWidth/320*10, 0, 0);
 
     //  The hero!
     player = game.add.sprite(screenWidth/2, screenHeight-60, 'ship');
@@ -79,9 +81,9 @@ function create() {
     player.play('fly');
     player.anchor.setTo(0.5, 0.5);
     game.physics.enable(player, Phaser.Physics.ARCADE);
-    player.body.setSize(screenWidth/10,screenWidth/10,0,0);
+    player.body.setSize(screenWidth/30,screenWidth/20,0,-10);
     player.width = screenWidth/320 * 50;
-    player.height = screenWidth/320 *75;
+    player.height = screenWidth/320 * 75;
     
     //player.inputEnabled = true;
     //player.input.start(0, true);
@@ -168,7 +170,7 @@ function angularMovement(thisAlien) {
 }   
 
 function createAliens() {
-    var x = screenWidth/4;
+    var x = screenWidth/3;
     var y = 0;
 
     for ( i = 0; i < 5; i++) {
@@ -187,16 +189,12 @@ function createAliens() {
     //  All this does is basically start the invaders moving. Notice we're moving
     // the Group they belong to, rather than the invaders directly.
     // var tween = game.add.tween(aliens).to( { x: 100 }, 1000, Phaser.Easing.Linear.None, true, 0, -1, true);
-
-
 }
 
 function setupInvader (invader) {
-
     invader.anchor.x = 0.5;
     invader.anchor.y = 0.5;
     invader.animations.add('kaboom');
-
 }
 
 function spawnBigAlien() {
@@ -206,7 +204,7 @@ function spawnBigAlien() {
     bigAlien.moveUp();
     bigAlien.anchor.setTo(0.5, 0.5);
     game.physics.enable(bigAlien, Phaser.Physics.ARCADE);
-    bigAlien.body.setSize(32,32,0,0);
+    bigAlien.body.setSize(screenWidth/320*32, screenWidth/320*32,0,0);
     //bigAlien.rotation = 3.1415;
     bigAlien.bossHP = 25;
 
@@ -269,7 +267,7 @@ function update() {
     })
 
     //  Scroll the background
-    starfield.tilePosition.y += 2;
+    background.tilePosition.y += 2;
 
 
     if (powerUpBlip) {
@@ -422,7 +420,7 @@ function powerUpBlip() {
 function render() {
 
    // game.debug.geom(hpMaskRect);
-  //  game.debug.body(bigAlien);
+    game.debug.body(player);
 
 }
 

@@ -2,28 +2,34 @@
 
 Assests load: we should name the ipad assets different names
 
-screen height and width: 768 & 1024
+screen height and width: 320 & 480
 
 player starting position
 
 
 */
 function preload() {
-	
-    game.load.image('bullet', 'assets/bullet.png');
-    game.load.image('enemyBullet', 'assets/enemy-bullet.png');
-    game.load.spritesheet('invader', 'assets/invader32x32x4.png', 32, 32);
-    game.load.image('ship', 'assets/ship.png');
+
+    game.load.image('bullet', 'assets/bulletHR.png');
+    game.load.image('enemyBullet', 'assets/enemy-bullet2.png');
+    game.load.image('invader', 'assets/invader_ipad.png');
+    //game.load.spritesheet('invader', 'assets/invader32x32x4.png', 32, 32);
+    game.load.spritesheet('ship', 'assets/ship-iPhone-spritesheet.png', 50, 75);
     game.load.spritesheet('kaboom', 'assets/explode.png', 128, 128);
-    game.load.image('starfield', 'assets/starfield.png');
-    game.load.image('background', 'assets/background2.png');
-    game.load.image('hp', 'assets/hp.png');
+    game.load.image('background', 'assets/background_city.jpg');
+    game.load.image('hp', 'assets/hp.png'); 
     game.load.image('topBar', 'assets/topOverlay.png');
-    game.load.image('powerUp', 'assets/powerUp.png');    
-    game.load.image('puBullet', 'assets/puBullet-iPad.png');
-    game.load.image('enemyShip', 'assets/enemyShip.png');
+    game.load.image('puBullet', 'assets/puBullet-iPhone.png');
+    game.load.image('powerUp', 'assets/powerUp-iPhone.png');
+    game.load.image('powerUpSpinner', 'assets/powerUpSpinner-iPhone.png');
+    game.load.image('hitSpark', 'assets/hitSpark-iPhone.png');   
+    game.load.image('enemyShip', 'assets/enemyShip_iPad2.png');
+    game.load.image('dialogBox', 'assets/dialog-iPhone.png');   
+    game.load.image('powerUpBlip', 'assets/weaponUpgradeBlip-iPhone.png');  
+    game.load.image('hpMask', 'assets/hpMask-iPhone.png');  
 
 }
 
+var fonter = "14px Aero"
 screenWidth = 768;
 screenHeight = 1024;
