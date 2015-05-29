@@ -38,7 +38,7 @@ function create() {
     //  The scrolling starfield background
     starfield = game.add.tileSprite(0, 0, screenWidth, screenHeight, 'starfield');
     starfield.width = 320;
-    starfield.height = screenWidth/0.320 * 1.6;
+    starfield.height = screenWidth/320 * 1.6;
 
     //  Our bullet group
     bullets = game.add.group();

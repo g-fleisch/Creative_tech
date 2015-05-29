@@ -30,6 +30,7 @@ var firing = true;
 var blipDirection = 1; //replace when you do better upgrade icon
 var hpMaskRect;
 var bossHPBar;
+var topBar;
 
 function create() {
 
@@ -73,7 +74,8 @@ function create() {
 
     //  The hero!
     player = game.add.sprite(screenWidth/2, screenHeight-60, 'ship');
-    player.animations.add("fly", [1,2], 10, true);
+    player.animations.add("bank", [2,3,4,3,2], 10, false)
+    player.animations.add("fly", [1,0], 10, true);
     player.play('fly');
     player.anchor.setTo(0.5, 0.5);
     game.physics.enable(player, Phaser.Physics.ARCADE);
@@ -92,7 +94,7 @@ function create() {
     aliens.setAll('height', screenWidth/320*84);
     //  The hiy sparks!
     sparks = game.add.group();
-    sparks.createMultiple(5, 'hitSpark');
+    sparks.createMultiple(15, 'hitSpark');
     sparks.setAll('anchor.x', 0.5);
     sparks.setAll('anchor.y', 0.5);
     sparks.alpha = 0.9;
@@ -106,9 +108,12 @@ function create() {
     explosions = game.add.group();
     explosions.createMultiple(15, 'kaboom');
     explosions.forEach(setupInvader, this);
+    explosions.setAll('anchor.x', 0.5);
+    explosions.setAll('anchor.y', 0.5);
 
-    game.add.sprite(0, 0, 'topBar');
-
+    topBar = game.add.sprite(0, 0, 'topBar');
+    topBar.width = screenWidth;
+    topBar.height = screenWidth/320 * 21;
     //  The score
     scoreString = ' ';
     scoreText = game.add.text(screenWidth*4/5, screenWidth/150, scoreString + score, { font: fonter, fill: '#93FAFF' });
@@ -497,7 +502,7 @@ function collisionHandler (alien, bullet) {
         //  And create an explosion :)
         var explosion = explosions.getFirstExists(false);
         explosion.reset(alien.body.x, alien.body.y);
-        explosion.play('kaboom', 30, false, true);
+        explosion.play('kaboom', 24, false, true);
 
         if (powerUpNext) {
             spawnPowerUp(alien.x,alien.y-screenWidth/5);
