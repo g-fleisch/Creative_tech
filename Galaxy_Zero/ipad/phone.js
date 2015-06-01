@@ -14,7 +14,7 @@ function preload() {
     game.load.image('enemyBullet', 'assets/enemy-bullet.png');
     game.load.image('invader', 'assets/invader-iPhone.png');
     //game.load.spritesheet('invader', 'assets/invader32x32x4.png', 32, 32);
-    game.load.spritesheet('ship', 'assets/shipBank.png', 106, 150);
+    game.load.spritesheet('ship', 'assets/shipBank.png', 106, 110);
     game.load.spritesheet('kaboom', 'assets/explosions.png', 125, 125);
     game.load.image('starfield', 'assets/background.png');
     game.load.image('background', 'assets/background2.png');

@@ -75,21 +75,21 @@ function create() {
     enemyBullets.callAll('body.setSize', 'body', screenWidth/320*10, screenWidth/320*10, 0, 0);
 
     //  The hero!
-    player = game.add.sprite(screenWidth/2, screenHeight-60, 'ship');
-    player.animations.add("bankL2", [1,1], 10, true);
-    player.animations.add("bankL1", [2,2], 10, true);
-    player.animations.add("bank0", [3,3], 10, true);
-    player.animations.add("bankR1", [4,4], 10, true);
-    player.animations.add("bankR2", [5,5], 10, true);
-    player.animations.add("bankR3", [6,6], 10, true);
+    player = game.add.sprite(screenWidth/2, screenHeight* 0.8, 'ship');
+    player.animations.add("bankL2", [0,0], 10, true);
+    player.animations.add("bankL1", [1,1], 10, true);
+    player.animations.add("bank0", [2,2], 10, true);
+    player.animations.add("bankR1", [3,3], 10, true);
+    player.animations.add("bankR2", [4,4], 10, true);
+    player.animations.add("bankR3", [5,5], 10, true);
 
-    player.animations.add("fly", [1,0], 10, true);
+    player.animations.add("fly", [2], 10, true);
     player.play('fly');
     player.anchor.setTo(0.5, 0.5);
     game.physics.enable(player, Phaser.Physics.ARCADE);
     player.body.setSize(screenWidth/30,screenWidth/20,0,-10);
     player.width = screenWidth/320 * 50;
-    player.height = screenWidth/320 * 75;
+    player.height = screenWidth/320 * 60;
     
     //player.inputEnabled = true;
     //player.input.start(0, true);
@@ -243,11 +243,15 @@ function spawnPowerUp(deadAlienX, deadAlienY) {
     powerUp.anchor.setTo(0.5, 0.5);
     game.physics.enable(powerUp, Phaser.Physics.ARCADE);
     powerUp.body.velocity.y = 50;
+    powerUp.width = screenWidth/320 * 16;
+    powerUp.height = screenWidth/320 * 16;
 
     powerUpSpinner = game.add.sprite( deadAlienX, deadAlienY, 'powerUpSpinner');
     powerUpSpinner.anchor.setTo(0.5, 0.5);
     game.physics.enable(powerUpSpinner, Phaser.Physics.ARCADE);
     powerUpSpinner.body.angularVelocity = 750;       
+    powerUpSpinner.width = screenWidth/320 * 24;
+    powerUpSpinner.height = screenWidth/320 * 24;
 
     powerUpNext = false;
 
@@ -453,12 +457,14 @@ function powerUpBlip() {
     powerUpBlip.anchor.setTo(0.5, 0.5);
     game.physics.enable(powerUpBlip, Phaser.Physics.ARCADE);
     powerUpBlip.alpha = 0.05;
+    powerUpBlip.width = player.width * 1.0;
+    powerUpBlip.height = player.width * 0.25;
 }
 
 function render() {
 
    // game.debug.geom(hpMaskRect);
-    game.debug.body(player);
+   // game.debug.body(player);
 
 }
 
@@ -484,11 +490,16 @@ function collisionBossman(bigBoss, bullet) {
 
             bigBoss.kill();
             bossHPBar.kill();
-            bossHPBarBackdrop.kill();
 
-            var explosion = explosions.getFirstExists(false);
-            explosion.reset(bigBoss.body.x+32, bigBoss.body.y+32);
-            explosion.play('kaboom', 30, false, true);
+
+        for(i=0; i<10; i++){
+            setTimeout(function(){    
+                var explosion = explosions.getFirstExists(false);
+                explosion.reset(bigBoss.body.x + Math.random()*bigBoss.width*2, bigBoss.body.y + Math.random()*bigBoss.width*2);
+                explosion.play('kaboom', 24, false, true);
+        
+            }, 100*i)
+        }            bossHPBarBackdrop.kill();
 
 
             setTimeout(function(){    
@@ -525,7 +536,7 @@ function blinkRed(thatGuy) {
     }, this);
 }
 
-function collisionHandler (alien, bullet) {
+function collisionHandler (bullet, alien) {
     if (alien.body.y > 20) {
         //  When a bullet hits an alien we kill them both
         bullet.kill();
@@ -536,9 +547,11 @@ function collisionHandler (alien, bullet) {
         scoreText.text = scoreString + score;
     
         //  And create an explosion :)
+
         var explosion = explosions.getFirstExists(false);
-        explosion.reset(alien.body.x, alien.body.y);
-        explosion.play('kaboom', 24, false, true);
+        explosion.reset(alien.body.x + screenWidth/320 * 16, alien.body.y + screenWidth/320 * 16);
+        explosion.play('kaboom', 30, false, true);       
+
 
         if (powerUpNext) {
             spawnPowerUp(alien.x,alien.y-screenWidth/5);
@@ -600,7 +613,7 @@ function fireBullet () {
                 bullet = bullets.getFirstExists(false);
                 if (bullet) {
                     // And fire it
-                    bullet.reset(player.x+12, player.y + 8);
+                    bullet.reset(player.x+14, player.y + 8);
                     bullet.body.velocity.y = -600*screenWidth/320;
                 }
                 bulletCycle = 1;

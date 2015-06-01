@@ -14,8 +14,8 @@ function preload() {
     game.load.image('enemyBullet', 'assets/enemy-bullet2.png');
     game.load.image('invader', 'assets/invader_ipad.png');
     //game.load.spritesheet('invader', 'assets/invader32x32x4.png', 32, 32);
-    game.load.spritesheet('ship', 'assets/ship-iPhone-spritesheet.png', 50, 75);
-    game.load.spritesheet('kaboom', 'assets/explode.png', 128, 128);
+    game.load.spritesheet('ship', 'assets/shipBank.png', 106, 110);
+    game.load.spritesheet('kaboom', 'assets/explosions.png', 125, 125);
     game.load.image('background', 'assets/background_city.jpg');
     game.load.image('hp', 'assets/hp.png'); 
     game.load.image('topBar', 'assets/topOverlay.png');
@@ -30,6 +30,6 @@ function preload() {
 
 }
 
-var fonter = "14px Aero"
+var fonter = "24px Aero"
 screenWidth = 768;
 screenHeight = 1024;
