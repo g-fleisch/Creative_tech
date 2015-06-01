@@ -19,7 +19,7 @@ function preload() {
     game.load.image('background', 'assets/background_city.jpg');
     game.load.image('hp', 'assets/hp.png'); 
     game.load.image('topBar', 'assets/topOverlay.png');
-    game.load.image('puBullet', 'assets/puBullet-iPhone.png');
+    game.load.image('puBullet', 'assets/puBullet-ipad.png');
     game.load.image('powerUp', 'assets/powerUp-iPhone.png');
     game.load.image('powerUpSpinner', 'assets/powerUpSpinner-iPhone.png');
     game.load.image('hitSpark', 'assets/hitSpark-iPhone.png');   
