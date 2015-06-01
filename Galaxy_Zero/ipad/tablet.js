@@ -10,22 +10,22 @@ player starting position
 */
 function preload() {
 
-    game.load.image('bullet', 'assets/bulletHR.png');
-    game.load.image('enemyBullet', 'assets/enemy-bullet2.png');
-    game.load.image('invader', 'assets/invader_ipad.png');
+    game.load.image('bullet', 'assets/bullet-iPad.png');
+    game.load.image('enemyBullet', 'assets/enemy-bullet-ipad.png');
+    game.load.image('invader', 'assets/invader_iPad.png');
     //game.load.spritesheet('invader', 'assets/invader32x32x4.png', 32, 32);
     game.load.spritesheet('ship', 'assets/shipBank.png', 106, 110);
     game.load.spritesheet('kaboom', 'assets/explosions.png', 125, 125);
     game.load.image('background', 'assets/background_city.jpg');
     game.load.image('hp', 'assets/hp.png'); 
     game.load.image('topBar', 'assets/topOverlay.png');
-    game.load.image('puBullet', 'assets/puBullet-ipad.png');
+    game.load.image('puBullet', 'assets/bulletPU-iPad.png');
     game.load.image('powerUp', 'assets/powerUp-iPhone.png');
     game.load.image('powerUpSpinner', 'assets/powerUpSpinner-iPhone.png');
-    game.load.image('hitSpark', 'assets/hitSpark-iPhone.png');   
-    game.load.image('enemyShip', 'assets/enemyShip_iPad2.png');
+    game.load.spritesheet('hitSpark', 'assets/jizhong.png', 61, 104);   
+    game.load.image('enemyShip', 'assets/enemyShip_iPad.png');
     game.load.image('dialogBox', 'assets/dialog-iPhone.png');   
-    game.load.image('powerUpBlip', 'assets/weaponUpgradeBlip-iPhone.png');  
+    game.load.image('powerUpBlip', 'assets/weaponUpgradeHR.png');  
     game.load.image('hpMask', 'assets/hpMask-iPhone.png');  
 
 }

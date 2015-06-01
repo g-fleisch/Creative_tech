@@ -434,7 +434,7 @@ function powerUpBlip() {
     game.physics.enable(powerUpBlip, Phaser.Physics.ARCADE);
     powerUpBlip.alpha = 0.05;
     powerUpBlip.width = player.width * 1.0;
-    powerUpBlip.height = player.width * 0.25;
+    powerUpBlip.height = player.width * 0.5;
 }
 
 function render() {
@@ -451,7 +451,7 @@ function collisionBossman(bigBoss, bullet) {
         bossHPBar.alpha = 0.70;
         bossHPBarBackdrop.alpha = 0.25;
 
-        hpMaskRect.width = bigAlien.bossHP*screenWidth/125;
+        hpMaskRect.width = bigAlien.bossHP*screenWidth/320;
         hpMaskRect.height = screenWidth/50;
         bossHPBar.updateCrop();
 
