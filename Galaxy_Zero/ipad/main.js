@@ -621,6 +621,8 @@ function timeline(){
     //DROP OVERLAY FUNCTION FOR THE DIALOG BOX (SENCHA CODE)
     //dialogappearhelper();
     dialogBox = game.add.sprite( -1 * screenWidth/2, screenHeight/3, 'dialogBox');
+    dialogBox.width = screenWidth * 0.8;
+    dialogBox.height = screenWidth * 0.21;
     dialogBox.anchor.setTo(0.5, 0.5);
     game.physics.enable(dialogBox, Phaser.Physics.ARCADE);
   
