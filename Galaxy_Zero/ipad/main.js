@@ -76,12 +76,13 @@ function create() {
 
     //  The hero!
     player = game.add.sprite(screenWidth/2, screenHeight* 0.8, 'ship');
-    player.animations.add("bankL2", [0,0], 10, true);
-    player.animations.add("bankL1", [1,1], 10, true);
-    player.animations.add("bank0", [2,2], 10, true);
-    player.animations.add("bankR1", [3,3], 10, true);
-    player.animations.add("bankR2", [4,4], 10, true);
-    player.animations.add("bankR3", [5,5], 10, true);
+    player.animations.add("bankL3", [0,0], 10, true);    
+    player.animations.add("bankL2", [1,1], 10, true);
+    player.animations.add("bankL1", [2,2], 10, true);
+    player.animations.add("bank0", [3,3], 10, true);
+    player.animations.add("bankR1", [4,4], 10, true);
+    player.animations.add("bankR2", [5,5], 10, true);
+    player.animations.add("bankR3", [6,6], 10, true);
 
     player.animations.add("fly", [2], 10, true);
     player.play('fly');
@@ -337,20 +338,17 @@ function update() {
 
 
         if (newX - player.x < -20){
+            player.play("bankL3");
+        }
+        else if (newX - player.x < -10 && newX - player.x > -20){
             player.play("bankL2");
-   //         player.scale = 1;
         }
-        else if (newX - player.x < -4 && newX - player.x > -20){
+        else if (player.x - newX < -2 && player.x - newX > -10){
             player.play("bankL1");
-   //         player.scale = 1;
+            player.scale = 1;
         }
-    //    else if (player.x - newX < -2 && player.x - newX > -5){
-    //        player.play("bank1");
-    //        player.scale = 1;
-    //    }
-        else if (newX - player.x < 2 && newX - player.x > -4){
+        else if (newX - player.x < 2 && newX - player.x > -2){
             player.play("bank0");
-    //        player.scale = 1;
         }
         else if (newX - player.x > 2 && newX - player.x < 10){
             player.play("bankR1");
