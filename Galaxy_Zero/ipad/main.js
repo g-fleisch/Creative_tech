@@ -217,13 +217,13 @@ function spawnBigAlien() {
 
 
     bossHPBarBackdrop = game.add.sprite( bigAlien.x, bigAlien.y + bigAlien.height/2, 'hpMask');
-    bossHPBarBackdrop.width = bigAlien.bossHP*screenWidth/125;
+    bossHPBarBackdrop.width = 25*screenWidth/125;
     bossHPBarBackdrop.height = screenWidth/50;
     bossHPBarBackdrop.alpha = 0.0;
     hpMaskRect = new Phaser.Rectangle(0, 0, bigAlien.bossHP*screenWidth/125, screenWidth/50);
 
     bossHPBar = game.add.sprite( bigAlien.x, bigAlien.y + bigAlien.height/2, 'hpMask');
-    bossHPBar.width = bigAlien.bossHP*screenWidth/125;
+    bossHPBar.width = 25*screenWidth/125;
     bossHPBar.height = screenWidth/50;
     bossHPBar.alpha = 0.0;
     bossHPBar.tint = 0xFF0000;
@@ -315,7 +315,7 @@ function update() {
         bossHPBarBackdrop.y = bossHPBar.y;
         //hpMaskRect.x = bossHPBar.x;
         //hpMaskRect.y = bossHPBar.y;
-        bossHPBar.width = bigAlien.bossHP*screenWidth/125;
+        //bossHPBar.width = bigAlien.bossHP*screenWidth/125;
     }
 
     if (catchFlag && firing){
@@ -345,22 +345,18 @@ function update() {
         }
         else if (player.x - newX < -2 && player.x - newX > -10){
             player.play("bankL1");
-            player.scale = 1;
         }
         else if (newX - player.x < 2 && newX - player.x > -2){
             player.play("bank0");
         }
         else if (newX - player.x > 2 && newX - player.x < 10){
             player.play("bankR1");
-            player.body.scale = -1;
         }
         else if (newX - player.x > 10 && newX - player.x < 20){
             player.play("bankR2");
-            player.body.scale = -1;
         }
         else if (newX - player.x > 20){
             player.play("bankR3");
-            player.body.scale = -1;
         }
       
         console.log(newX - player.x);
@@ -461,7 +457,7 @@ function powerUpBlip() {
 
 function render() {
 
-   // game.debug.geom(hpMaskRect);
+    game.debug.geom(hpMaskRect);
    // game.debug.body(player);
 
 }
