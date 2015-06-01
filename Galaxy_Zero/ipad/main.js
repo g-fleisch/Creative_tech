@@ -232,15 +232,15 @@ function spawnPowerUp(deadAlienX, deadAlienY) {
     powerUp.anchor.setTo(0.5, 0.5);
     game.physics.enable(powerUp, Phaser.Physics.ARCADE);
     powerUp.body.velocity.y = 50;
-    powerUp.width = screenWidth/320 * 16;
-    powerUp.height = screenWidth/320 * 16;
+    powerUp.width = screenWidth/320 * 24;
+    powerUp.height = screenWidth/320 * 24;
 
     powerUpSpinner = game.add.sprite( deadAlienX, deadAlienY, 'powerUpSpinner');
     powerUpSpinner.anchor.setTo(0.5, 0.5);
     game.physics.enable(powerUpSpinner, Phaser.Physics.ARCADE);
     powerUpSpinner.body.angularVelocity = 750;       
-    powerUpSpinner.width = screenWidth/320 * 24;
-    powerUpSpinner.height = screenWidth/320 * 24;
+    powerUpSpinner.width = screenWidth/320 * 32;
+    powerUpSpinner.height = screenWidth/320 * 32;
 
     powerUpNext = false;
 }

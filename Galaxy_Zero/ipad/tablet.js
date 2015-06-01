@@ -20,8 +20,8 @@ function preload() {
     game.load.image('hp', 'assets/hp.png'); 
     game.load.image('topBar', 'assets/topOverlay.png');
     game.load.image('puBullet', 'assets/bulletPU-iPad.png');
-    game.load.image('powerUp', 'assets/powerUp-iPhone.png');
-    game.load.image('powerUpSpinner', 'assets/powerUpSpinner-iPhone.png');
+    game.load.image('powerUp', 'assets/powerUp-iPad.png');
+    game.load.image('powerUpSpinner', 'assets/powerUpSpinner-iPad.png');
     game.load.spritesheet('hitSpark', 'assets/jizhong.png', 61, 104);   
     game.load.image('enemyShip', 'assets/enemyShip_iPad.png');
     game.load.image('dialogBox', 'assets/dialog-iPhone.png');   
