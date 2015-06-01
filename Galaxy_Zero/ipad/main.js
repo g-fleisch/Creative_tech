@@ -76,16 +76,15 @@ function create() {
 
     //  The hero!
     player = game.add.sprite(screenWidth/2, screenHeight* 0.8, 'ship');
-    player.animations.add("bankL3", [0,0], 10, true);    
-    player.animations.add("bankL2", [1,1], 10, true);
-    player.animations.add("bankL1", [2,2], 10, true);
+    player.animations.add("bankL3", [0,0], 100, true);
+    player.animations.add("bankL2", [1,1], 100, true);
+    player.animations.add("bankL1", [2,2], 100, true);
     player.animations.add("bank0", [3,3], 10, true);
-    player.animations.add("bankR1", [4,4], 10, true);
-    player.animations.add("bankR2", [5,5], 10, true);
-    player.animations.add("bankR3", [6,6], 10, true);
+    player.animations.add("bankR1", [4,4], 100, true);
+    player.animations.add("bankR2", [5,5], 100, true);
+    player.animations.add("bankR3", [6,6], 100, true);
 
-    player.animations.add("fly", [2], 10, true);
-    player.play('fly');
+    player.play('bank0');
     player.anchor.setTo(0.5, 0.5);
     game.physics.enable(player, Phaser.Physics.ARCADE);
     player.body.setSize(screenWidth/30,screenWidth/20,0,-10);
@@ -113,7 +112,7 @@ function create() {
     //spawnBigAlien();
     //spawnPowerUp();
 
-  //  An explosion pool
+    //An explosion pool
     explosions = game.add.group();
     explosions.createMultiple(15, 'kaboom');
     explosions.forEach(setupInvader, this);
@@ -126,18 +125,7 @@ function create() {
     //  The score
     scoreString = ' ';
     scoreText = game.add.text(screenWidth*4/5, screenWidth/150, scoreString + score, { font: fonter, fill: '#93FAFF' });
-
-    //  Lives
-    
-    lives = game.add.group();
-    //game.add.text(game.world.width - 105, 10, 'Ship Health ', { font: '18px Arial', fill: '#fff' });
-
-    //  Text
-    //stateText = game.add.text(game.world.centerX,game.world.centerY,' ', { font: '20px Arial', fill: '#fff' });
-    //stateText.anchor.setTo(0.5, 0.5);
-    //stateText.visible = false;
-
-  
+ 
     //  And some controls to play the game with
     game.input.onDown.add(touchStart);
     game.input.onUp.add(touchEnd);
@@ -255,8 +243,6 @@ function spawnPowerUp(deadAlienX, deadAlienY) {
     powerUpSpinner.height = screenWidth/320 * 24;
 
     powerUpNext = false;
-
-
 }
 
 function spawnSpark(sparksX, sparksY) {
@@ -343,7 +329,7 @@ function update() {
         else if (newX - player.x < -10 && newX - player.x > -20){
             player.play("bankL2");
         }
-        else if (player.x - newX < -2 && player.x - newX > -10){
+        else if (newX - player.x < -2 && player.x - newX > -10){
             player.play("bankL1");
         }
         else if (newX - player.x < 2 && newX - player.x > -2){
@@ -358,8 +344,6 @@ function update() {
         else if (newX - player.x > 20){
             player.play("bankR3");
         }
-      
-        console.log(newX - player.x);
 
         player.x = newX;
         player.y = newY;
@@ -385,8 +369,6 @@ function update() {
         game.physics.arcade.overlap(aliens, player, enemyCrashPlayer, null, this);
         game.physics.arcade.overlap(bigAlien, player, bigEnemyCrashPlayer, null, this);
         game.physics.arcade.overlap(powerUp, player, powerUpPlayer, null, this);
-
-
     }
 }
 
@@ -420,20 +402,20 @@ function enemyCrashPlayer(player, littleEnemy) {
 
 function bigEnemyCrashPlayer(bigEnemy, player) {
 
-     bigEnemy.bossHP -= 0.25;
-        blinkRed(bigEnemy);
+    bigEnemy.bossHP -= 0.25;
+    blinkRed(bigEnemy);
 
-        if (bigEnemy.bossHP < 1) {
-            score += 1000;
-            scoreText.text = scoreString + score;
-            bigEnemy.kill();
-            var explosion = explosions.getFirstExists(false);
-            explosion.reset(bigEnemy.body.x+32, bigEnemy.body.y+32);
-            explosion.play('kaboom', 30, false, true);
-            postviewStageAppearHelper();
-            firing = false;
-            endGame = false;
-        }
+    if (bigEnemy.bossHP < 1) {
+        score += 1000;
+        scoreText.text = scoreString + score;
+        bigEnemy.kill();
+        var explosion = explosions.getFirstExists(false);
+        explosion.reset(bigEnemy.body.x+32, bigEnemy.body.y+32);
+        explosion.play('kaboom', 30, false, true);
+        postviewStageAppearHelper();
+        firing = false;
+        endGame = false;
+    }
 
     blink(player);
 
