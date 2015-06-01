@@ -58,7 +58,7 @@ function create() {
     puBullets.createMultiple(20, 'puBullet');
     puBullets.setAll('anchor.x', 0.5);
     puBullets.setAll('anchor.y', 1);
-    puBullets.setAll('width',screenWidth/320*10);
+    puBullets.setAll('width',screenWidth/320*20);
     puBullets.setAll('height',screenWidth/320*50);
     puBullets.setAll('outOfBoundsKill', true);
     puBullets.setAll('checkWorldBounds', true);
@@ -201,6 +201,7 @@ function spawnBigAlien() {
     game.physics.enable(bigAlien, Phaser.Physics.ARCADE);
     bigAlien.width = screenWidth/320*54;
     bigAlien.height = screenWidth/320*48;
+    bigAlien.body.setSize(screenWidth/15,screenWidth/15,0,-10);
     //bigAlien.rotation = 3.1415;
     bigAlien.bossHP = 25;
 
@@ -483,7 +484,7 @@ function powerUpBlip() {
 function render() {
 
     //game.debug.geom(hpMaskRect);
-    //game.debug.body(player);
+//    if (bigAlien){game.debug.body(bigAlien);}
 
 }
 
