@@ -98,8 +98,8 @@ function create() {
     aliens = game.add.group();
     aliens.enableBody = true;
     aliens.physicsBodyType = Phaser.Physics.ARCADE;
-    aliens.setAll('width', screenWidth/320*64);
-    aliens.setAll('height', screenWidth/320*84);
+    aliens.setAll('width', screenWidth/768*64);
+    aliens.setAll('height', screenWidth/768*84);
     //  The hiy sparks!
     sparks = game.add.group();
     sparks.createMultiple(15, 'hitSpark');
@@ -199,7 +199,8 @@ function spawnBigAlien() {
     bigAlien.moveUp();
     bigAlien.anchor.setTo(0.5, 0.5);
     game.physics.enable(bigAlien, Phaser.Physics.ARCADE);
-    bigAlien.body.setSize(screenWidth/320*32, screenWidth/320*32,0,0);
+    bigAlien.width = screenWidth/320*54;
+    bigAlien.height = screenWidth/320*48;
     //bigAlien.rotation = 3.1415;
     bigAlien.bossHP = 25;
 
@@ -401,7 +402,7 @@ function enemyCrashPlayer(player, littleEnemy) {
 }
 
 function bigEnemyCrashPlayer(bigEnemy, player) {
-
+/*
     bigEnemy.bossHP -= 0.25;
     blinkRed(bigEnemy);
 
@@ -415,6 +416,48 @@ function bigEnemyCrashPlayer(bigEnemy, player) {
         postviewStageAppearHelper();
         firing = false;
         endGame = false;
+    }
+*/
+
+    if (bigEnemy.body.y > 30) {
+        bossHPBar.alpha = 0.70;
+        bossHPBarBackdrop.alpha = 0.25;
+
+        hpMaskRect.width = bigAlien.bossHP*screenWidth/320;
+        hpMaskRect.height = screenWidth/50;
+        bossHPBar.updateCrop();
+
+        spawnSpark(bullet.x, bigEnemy.y);
+
+        bigEnemy.bossHP -= 0.25;
+        blinkRed(bigEnemy);
+
+        if (bigEnemy.bossHP < 1) {
+            score += 1000;
+            scoreText.text = scoreString + score;
+
+            bigEnemy.kill();
+            bossHPBar.kill();
+
+
+        for(i=0; i<10; i++){
+            setTimeout(function(){    
+                var explosion = explosions.getFirstExists(false);
+                explosion.reset(bigEnemy.body.x + Math.random()*bigEnemy.width*2, bigEnemy.body.y + Math.random()*bigEnemy.width*2);
+                explosion.play('kaboom', 24, false, true);
+        
+            }, 100*i)
+        }            bossHPBarBackdrop.kill();
+
+
+            setTimeout(function(){    
+                postviewStageAppearHelper();
+                firing = false;
+                endGame = false;
+            }, 1500)
+                
+
+        }
     }
 
     blink(player);
@@ -439,8 +482,8 @@ function powerUpBlip() {
 
 function render() {
 
-    game.debug.geom(hpMaskRect);
-   // game.debug.body(player);
+    //game.debug.geom(hpMaskRect);
+    //game.debug.body(player);
 
 }
 
@@ -618,18 +661,16 @@ function timeline(){
     timelinetime += 800;
 
     setTimeout(function(){
-    //DROP OVERLAY FUNCTION FOR THE DIALOG BOX (SENCHA CODE)
+    //DROP OVERLAY FUNCTION FOR THE DIALOG BOX
     //dialogappearhelper();
     dialogBox = game.add.sprite( -1 * screenWidth/2, screenHeight/3, 'dialogBox');
     dialogBox.width = screenWidth * 0.8;
-    dialogBox.height = screenWidth * 0.21;
+    dialogBox.height = screenWidth * 0.218;
     dialogBox.anchor.setTo(0.5, 0.5);
     game.physics.enable(dialogBox, Phaser.Physics.ARCADE);
   
     var dialogBoxSlideIn = game.add.tween(dialogBox)
         .to( { x: screenWidth/2 }, 500, "Sine", false, 0, 0, false)
-    //    .to( { x: screenWidth*7/8 }, 3000, Phaser.Easing.Linear.None, false, 150, 0, false)
-    //    .to( { x: screenWidth*1/8 }, 3000, Phaser.Easing.Linear.None, false, 150, 0, false)
         .to( { x:-1 *  screenWidth/2 }, 500, "Sine", false, 2500, 0, false)
         .start();
 

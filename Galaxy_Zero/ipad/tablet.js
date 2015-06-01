@@ -33,3 +33,7 @@ function preload() {
 var fonter = "24px Aero"
 screenWidth = 768;
 screenHeight = 1024;
+/*
+var fonter = "14px Aero"
+screenWidth = 320;
+screenHeight = 480;*/
