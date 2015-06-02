@@ -26,14 +26,13 @@ var powerUp;
 var seekSpeed = 20;
 var powerUpNext = false;
 var endGame = true;
-var firing = true;
+var firing = false;
 var blipDirection = 1; //replace when you do better upgrade icon
 var hpMaskRect;
 var bossHPBar;
 var topBar;
 
 function create() {
-
     game.physics.startSystem(Phaser.Physics.ARCADE);
 
     //  The scrolling background
@@ -131,7 +130,12 @@ function create() {
     game.input.onUp.add(touchEnd);
 }
 
-function touchStart() { 
+function startTestDrive() {
+    firing = true;
+    showTutorial();
+}
+
+function touchStart() {
     deltaShipX = player.x - game.input.activePointer.worldX;
     deltaShipY = player.y - game.input.activePointer.worldY;
     catchFlag = true;
@@ -355,7 +359,7 @@ function update() {
 
     if (player.alive) {
     //Auto fire at 2.5 into the game
-        if (game.time.now > 2500 && firing) {
+        if (firing) {
             fireBullet();
         }
     //Enemies fire timer
