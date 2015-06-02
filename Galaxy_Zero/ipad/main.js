@@ -123,8 +123,8 @@ function create() {
     topBar.height = screenWidth/320 * 21;
     //  The score
     scoreString = ' ';
-    scoreText = game.add.text(screenWidth*4/5, screenWidth/150, scoreString + score, { font: fonter, fill: '#93FAFF' });
- 
+    scoreText = game.add.text(screenWidth*4/5, screenWidth/150*2, scoreString + score, { font: fonter, fill: '#93FAFF' });
+    
     //  And some controls to play the game with
     game.input.onDown.add(touchStart);
     game.input.onUp.add(touchEnd);
@@ -271,7 +271,9 @@ function update() {
 
     //  Scroll the background
     background.tilePosition.y += 2;
-
+    if(score < 10){
+        scoreText.text = score;
+    }
 
     if (powerUpBlip) {
         powerUpBlip.x = player.x;
@@ -407,23 +409,6 @@ function enemyCrashPlayer(player, littleEnemy) {
 }
 
 function bigEnemyCrashPlayer(bigEnemy, player) {
-/*
-    bigEnemy.bossHP -= 0.25;
-    blinkRed(bigEnemy);
-
-    if (bigEnemy.bossHP < 1) {
-        score += 1000;
-        scoreText.text = scoreString + score;
-        bigEnemy.kill();
-        var explosion = explosions.getFirstExists(false);
-        explosion.reset(bigEnemy.body.x+32, bigEnemy.body.y+32);
-        explosion.play('kaboom', 30, false, true);
-        postviewStageAppearHelper();
-        firing = false;
-        endGame = false;
-    }
-*/
-
     if (bigEnemy.body.y > 30) {
         bossHPBar.alpha = 0.70;
         bossHPBarBackdrop.alpha = 0.25;
