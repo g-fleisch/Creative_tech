@@ -36,7 +36,6 @@ function preload() {
     game.load.image('powerUpSpinner', 'assets/powerUpSpinner-ipad.png');
     game.load.spritesheet('hitSpark', 'assets/jizhong.png', 61, 104);   
     game.load.image('enemyShip', 'assets/enemy-ship-ipad.png');
-    game.load.image('dialogBox', 'assets/dialog-iPhone.png');   
     game.load.image('dialogBox', 'assets/dialog-box-ipad.png');   
     game.load.image('powerUpBlip', 'assets/weaponUpgradeHR.png');  
     game.load.image('hpMask', 'assets/hpMask.png');  
