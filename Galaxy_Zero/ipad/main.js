@@ -75,13 +75,10 @@ function create() {
 
     //  The hero!
     player = game.add.sprite(screenWidth/2, screenHeight* 0.8, 'ship');
-    player.animations.add("bankL3", [0,0], 100, true);
-    player.animations.add("bankL2", [1,1], 100, true);
-    player.animations.add("bankL1", [2,2], 100, true);
-    player.animations.add("bank0", [3,3], 10, true);
-    player.animations.add("bankR1", [4,4], 100, true);
-    player.animations.add("bankR2", [5,5], 100, true);
-    player.animations.add("bankR3", [6,6], 100, true);
+    player.animations.add("bank0", [0,0], 100, true);
+    player.animations.add("bankR1", [1,1], 100, true);
+    player.animations.add("bankR2", [2,2], 100, true);
+    player.animations.add("bankR3", [3,3], 100, true);
 
     player.play('bank0');
     player.anchor.setTo(0.5, 0.5);
@@ -332,25 +329,32 @@ function update() {
 
 
         if (newX - player.x < -20){
-            player.play("bankL3");
+            player.play("bankR3");
+            player.scale.x = -1;
         }
         else if (newX - player.x < -10 && newX - player.x > -20){
-            player.play("bankL2");
+            player.play("bankR2");
+            player.scale.x = -1;
         }
         else if (newX - player.x < -2 && player.x - newX > -10){
-            player.play("bankL1");
+            player.play("bankR1");
+            player.scale.x = -1;
         }
         else if (newX - player.x < 2 && newX - player.x > -2){
             player.play("bank0");
+            //player.scale.x = -1;
         }
         else if (newX - player.x > 2 && newX - player.x < 10){
             player.play("bankR1");
+            player.scale.x = 1;
         }
         else if (newX - player.x > 10 && newX - player.x < 20){
             player.play("bankR2");
+            player.scale.x = 1;
         }
         else if (newX - player.x > 20){
             player.play("bankR3");
+            player.scale.x = 1;
         }
 
         player.x = newX;
@@ -466,7 +470,7 @@ function powerUpBlip() {
     powerUpBlip.anchor.setTo(0.5, 0.5);
     game.physics.enable(powerUpBlip, Phaser.Physics.ARCADE);
     powerUpBlip.alpha = 0.05;
-    powerUpBlip.width = player.width * 1.0;
+    powerUpBlip.width = player.width * -1.0;
     powerUpBlip.height = player.width * 0.5;
 }
 
@@ -653,7 +657,7 @@ function timeline(){
     setTimeout(function(){
     //DROP OVERLAY FUNCTION FOR THE DIALOG BOX
     //dialogappearhelper();
-    dialogBox = game.add.sprite( -1 * screenWidth/2, screenHeight/3, 'dialogBox');
+    dialogBox = game.add.sprite( -1 * screenWidth/2, screenHeight/3.3, 'dialogBox');
     dialogBox.width = screenWidth * 0.8;
     dialogBox.height = screenWidth * 0.218;
     dialogBox.anchor.setTo(0.5, 0.5);
