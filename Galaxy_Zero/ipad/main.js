@@ -4,6 +4,7 @@ var game = new Phaser.Game(screenWidth, screenHeight, Phaser.AUTO, 'phaser-examp
 
 
 var player;
+var playership;
 var aliens;
 var bullets;
 var sparks;
@@ -86,6 +87,13 @@ function create() {
     player.body.setSize(screenWidth/30,screenWidth/20,0,-10);
     player.width = screenWidth/320 * 50;
     player.height = screenWidth/320 * 60;
+
+    playership = game.add.group();
+    playership.create(screenWidth/2 + screenWidth/70, screenHeight* 0.8 + (screenWidth/320 * 35), 'shipThruster');
+    playership.create(screenWidth/2 - screenWidth/70, screenHeight* 0.8 + (screenWidth/320 * 35), 'shipThruster');
+    playership.setAll('anchor.x', 0.5);
+    playership.setAll('anchor.y', 0.5);
+    playership.add(player);
     
     //player.inputEnabled = true;
     //player.input.start(0, true);
@@ -356,6 +364,8 @@ function update() {
             player.play("bankR3");
             player.scale.x = 1;
         }
+
+        //playership.rotation += 0.02;
 
         player.x = newX;
         player.y = newY;
