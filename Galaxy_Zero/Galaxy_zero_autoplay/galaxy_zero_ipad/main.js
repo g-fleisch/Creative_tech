@@ -141,6 +141,7 @@ function create() {
 function startTestDrive() {
     firing = true;
     showTutorial();
+    console.log("what");
 }
 
 function touchStart() {
