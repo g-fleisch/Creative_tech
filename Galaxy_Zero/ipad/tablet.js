@@ -38,8 +38,8 @@ function preload() {
     game.load.image('enemyShip', 'assets/enemy-ship-ipad.png');
     game.load.image('dialogBox', 'assets/dialog-box-ipad.png');   
     game.load.image('powerUpBlip', 'assets/weaponUpgradeHR.png');  
-    game.load.image('hpMask', 'assets/hpMask.png');  
-
+    game.load.image('hpMask', 'assets/hpMask.png');
+    game.load.image('shipThruster', 'assets/shipThruster-ipad.png');
 }
 
 var fonter = "24px Michroma"
