@@ -139,7 +139,7 @@ function create() {
 
 function startTestDrive() {
     firing = true;
-    //showTutorial();
+    showTutorial();
 }
 
 function touchStart() {
