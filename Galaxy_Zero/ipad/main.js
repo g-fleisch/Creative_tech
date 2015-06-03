@@ -120,8 +120,8 @@ function create() {
     topBar.height = screenWidth/320 * 21;
     //  The score
     scoreString = ' ';
-    scoreText = game.add.text(screenWidth*4/5, screenWidth/150*2, scoreString + score, { font: fonter, fill: '#93FAFF' });
-    
+    scoreText = game.add.text(screenWidth*4.25/5, screenWidth/150*2, scoreString + score, { font: fonter, fill: '#93FAFF' });
+    scoreWord = game.add.text(screenWidth*3.55/5, screenWidth/150*2, "SCORE", { font: fonter, fill: '#93FAFF' });
     //  And some controls to play the game with
     game.input.onDown.add(touchStart);
     game.input.onUp.add(touchEnd);
@@ -273,8 +273,8 @@ function update() {
     }
 
     if (powerUpBlip) {
-        powerUpBlip.x = player.x;
-        powerUpBlip.y = player.y - player.height/1.5
+        //powerUpBlip.x = player.x;
+        //powerUpBlip.y = player.y - player.height/1.5
         powerUpBlip.alpha += blipDirection*(1-powerUpBlip.alpha)/5;
         if (powerUpBlip.alpha >= 0.99) {
             blipDirection = -1;
@@ -470,8 +470,10 @@ function powerUpBlip() {
     powerUpBlip.anchor.setTo(0.5, 0.5);
     game.physics.enable(powerUpBlip, Phaser.Physics.ARCADE);
     powerUpBlip.alpha = 0.05;
-    powerUpBlip.width = player.width * -1.0;
+    powerUpBlip.width = player.width * 1.0;
     powerUpBlip.height = player.width * 0.5;
+    powerUpBlip.scale.x = 1;
+    powerUpBlip.scale.y = 1;
 }
 
 function render() {

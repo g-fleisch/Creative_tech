@@ -10,7 +10,7 @@ var sparks;
 var bigAlien = null;
 var bulletTime = 0;
 var explosions;
-var starfield;
+var background;
 var score = 0;
 var scoreString = '';
 var scoreText;
@@ -29,16 +29,15 @@ var endGame = true;
 var firing = false;
 var blipDirection = 1; //replace when you do better upgrade icon
 var hpMaskRect;
-var bossHPBar
+var bossHPBar;
+var topBar;
 
 function create() {
-
     game.physics.startSystem(Phaser.Physics.ARCADE);
 
-    //  The scrolling starfield background
-    starfield = game.add.tileSprite(0, 0, screenWidth, screenHeight, 'starfield');
-    starfield.width = 320;
-    starfield.height = screenWidth/320 * 1.6;
+    //  The scrolling background
+    background = game.add.tileSprite(0, 0, screenWidth, screenHeight, 'background');
+    background.scale.x = 1.129;
 
     //  Our bullet group
     bullets = game.add.group();
@@ -46,9 +45,9 @@ function create() {
     bullets.physicsBodyType = Phaser.Physics.ARCADE;
     bullets.createMultiple(20, 'bullet');
     bullets.setAll('anchor.x', 0.5);
-    bullets.setAll('width',10);
-    bullets.setAll('height',50);
     bullets.setAll('anchor.y', 1);
+    bullets.setAll('width',screenWidth/320*10);
+    bullets.setAll('height',screenWidth/320*50);
     bullets.setAll('outOfBoundsKill', true);
     bullets.setAll('checkWorldBounds', true);
 
@@ -58,6 +57,8 @@ function create() {
     puBullets.createMultiple(20, 'puBullet');
     puBullets.setAll('anchor.x', 0.5);
     puBullets.setAll('anchor.y', 1);
+    puBullets.setAll('width',screenWidth/320*20);
+    puBullets.setAll('height',screenWidth/320*50);
     puBullets.setAll('outOfBoundsKill', true);
     puBullets.setAll('checkWorldBounds', true);
 
@@ -70,15 +71,21 @@ function create() {
     enemyBullets.setAll('anchor.y', 1);
     enemyBullets.setAll('outOfBoundsKill', true);
     enemyBullets.setAll('checkWorldBounds', true);
+    enemyBullets.callAll('body.setSize', 'body', screenWidth/320*10, screenWidth/320*10, 0, 0);
 
     //  The hero!
-    player = game.add.sprite(screenWidth/2, screenHeight-60, 'ship');
-    player.animations.add('notFly', [1], 10, true);
-    player.animations.add("fly", [0,1], 10, true);
-    player.play('notFly');
+    player = game.add.sprite(screenWidth/2, screenHeight* 0.8, 'ship');
+    player.animations.add("bank0", [0,0], 100, true);
+    player.animations.add("bankR1", [1,1], 100, true);
+    player.animations.add("bankR2", [2,2], 100, true);
+    player.animations.add("bankR3", [3,3], 100, true);
+
+    player.play('bank0');
     player.anchor.setTo(0.5, 0.5);
     game.physics.enable(player, Phaser.Physics.ARCADE);
-    player.body.setSize(screenWidth/10,screenWidth/10,0,0);
+    player.body.setSize(screenWidth/30,screenWidth/20,0,-10);
+    //player.width = screenWidth/320 * 50;
+    //player.height = screenWidth/320 * 60;
     
     //player.inputEnabled = true;
     //player.input.start(0, true);
@@ -87,57 +94,45 @@ function create() {
     aliens = game.add.group();
     aliens.enableBody = true;
     aliens.physicsBodyType = Phaser.Physics.ARCADE;
-
+    aliens.setAll('width', screenWidth/768*64);
+    aliens.setAll('height', screenWidth/768*84);
     //  The hiy sparks!
     sparks = game.add.group();
-    sparks.createMultiple(5, 'hitSpark');
+    sparks.createMultiple(15, 'hitSpark');
     sparks.setAll('anchor.x', 0.5);
     sparks.setAll('anchor.y', 0.5);
     sparks.alpha = 0.9;
 
     firstAliens();
-
-
-    setTimeout(function(){       
-        firing = true;
-        setTimeout(function(){       
-            player.play('fly');
-        },500)
-    }, 1500)
-
-
     //createAliens();
     //spawnBigAlien();
     //spawnPowerUp();
 
-  //  An explosion pool
+    //An explosion pool
     explosions = game.add.group();
     explosions.createMultiple(15, 'kaboom');
     explosions.forEach(setupInvader, this);
+    explosions.setAll('anchor.x', 0.5);
+    explosions.setAll('anchor.y', 0.5);
 
-    game.add.sprite(0, 0, 'topBar');
-
+    topBar = game.add.sprite(0, 0, 'topBar');
+    topBar.width = screenWidth;
+    topBar.height = screenWidth/320 * 21;
     //  The score
     scoreString = ' ';
-    scoreText = game.add.text(screenWidth*4/5, screenWidth/150, scoreString + score, { font: fonter, fill: '#93FAFF' });
-
-    //  Lives
-    
-    lives = game.add.group();
-    //game.add.text(game.world.width - 105, 10, 'Ship Health ', { font: '18px Arial', fill: '#fff' });
-
-    //  Text
-    //stateText = game.add.text(game.world.centerX,game.world.centerY,' ', { font: '20px Arial', fill: '#fff' });
-    //stateText.anchor.setTo(0.5, 0.5);
-    //stateText.visible = false;
-
-  
+    scoreText = game.add.text(screenWidth*4.25/5, screenWidth/150*2, scoreString + score, { font: fonter, fill: '#93FAFF' });
+    scoreWord = game.add.text(screenWidth*3.55/5, screenWidth/150*2, "SCORE", { font: fonter, fill: '#93FAFF' });
     //  And some controls to play the game with
     game.input.onDown.add(touchStart);
     game.input.onUp.add(touchEnd);
 }
 
-function touchStart() { 
+function startTestDrive() {
+    firing = true;
+    //showTutorial();
+}
+
+function touchStart() {
     deltaShipX = player.x - game.input.activePointer.worldX;
     deltaShipY = player.y - game.input.activePointer.worldY;
     catchFlag = true;
@@ -171,7 +166,7 @@ function angularMovement(thisAlien) {
 }   
 
 function createAliens() {
-    var x = screenWidth/4;
+    var x = screenWidth/3;
     var y = 0;
 
     for ( i = 0; i < 5; i++) {
@@ -190,16 +185,12 @@ function createAliens() {
     //  All this does is basically start the invaders moving. Notice we're moving
     // the Group they belong to, rather than the invaders directly.
     // var tween = game.add.tween(aliens).to( { x: 100 }, 1000, Phaser.Easing.Linear.None, true, 0, -1, true);
-
-
 }
 
 function setupInvader (invader) {
-
     invader.anchor.x = 0.5;
     invader.anchor.y = 0.5;
     invader.animations.add('kaboom');
-
 }
 
 function spawnBigAlien() {
@@ -207,23 +198,23 @@ function spawnBigAlien() {
     bigAlien = game.add.sprite( screenWidth/5, -20, 'enemyShip');
     bigAlien.sendToBack();
     bigAlien.moveUp();
-    bigAlien.width *= 160/screenWidth;///320*64;
-    bigAlien.height *= 160/screenWidth;///320*55;
     bigAlien.anchor.setTo(0.5, 0.5);
     game.physics.enable(bigAlien, Phaser.Physics.ARCADE);
-    bigAlien.body.setSize(32,32,0,0);
+    bigAlien.width = screenWidth/320*54;
+    bigAlien.height = screenWidth/320*48;
+    bigAlien.body.setSize(screenWidth/15,screenWidth/15,0,-10);
     //bigAlien.rotation = 3.1415;
     bigAlien.bossHP = 25;
 
 
     bossHPBarBackdrop = game.add.sprite( bigAlien.x, bigAlien.y + bigAlien.height/2, 'hpMask');
-    bossHPBarBackdrop.width = bigAlien.bossHP*screenWidth/125;
+    bossHPBarBackdrop.width = 25*screenWidth/125;
     bossHPBarBackdrop.height = screenWidth/50;
     bossHPBarBackdrop.alpha = 0.0;
     hpMaskRect = new Phaser.Rectangle(0, 0, bigAlien.bossHP*screenWidth/125, screenWidth/50);
 
     bossHPBar = game.add.sprite( bigAlien.x, bigAlien.y + bigAlien.height/2, 'hpMask');
-    bossHPBar.width = bigAlien.bossHP*screenWidth/125;
+    bossHPBar.width = 25*screenWidth/125;
     bossHPBar.height = screenWidth/50;
     bossHPBar.alpha = 0.0;
     bossHPBar.tint = 0xFF0000;
@@ -243,16 +234,18 @@ function spawnPowerUp(deadAlienX, deadAlienY) {
     powerUp = game.add.sprite( deadAlienX, deadAlienY, 'powerUp');
     powerUp.anchor.setTo(0.5, 0.5);
     game.physics.enable(powerUp, Phaser.Physics.ARCADE);
-    powerUp.body.velocity.y = 50*screenWidth/320;
+    powerUp.body.velocity.y = 50;
+    powerUp.width = screenWidth/320 * 24;
+    powerUp.height = screenWidth/320 * 24;
 
     powerUpSpinner = game.add.sprite( deadAlienX, deadAlienY, 'powerUpSpinner');
     powerUpSpinner.anchor.setTo(0.5, 0.5);
     game.physics.enable(powerUpSpinner, Phaser.Physics.ARCADE);
     powerUpSpinner.body.angularVelocity = 750;       
+    powerUpSpinner.width = screenWidth/320 * 32;
+    powerUpSpinner.height = screenWidth/320 * 32;
 
     powerUpNext = false;
-
-
 }
 
 function spawnSpark(sparksX, sparksY) {
@@ -269,18 +262,19 @@ function update() {
 
     aliens.forEach(function(someAlien){
         if (someAlien.angularGuy){   
-            game.physics.arcade.velocityFromAngle(someAlien.angle+90, 230*screenWidth/320, someAlien.body.velocity);
+            game.physics.arcade.velocityFromAngle(someAlien.angle+90, 230, someAlien.body.velocity);
         }
     })
 
     //  Scroll the background
-    starfield.tilePosition.y += 2*screenWidth/320;
-
-    //console.log();
+    background.tilePosition.y += 2;
+    if(score < 10){
+        scoreText.text = score;
+    }
 
     if (powerUpBlip) {
-        powerUpBlip.x = player.x;
-        powerUpBlip.y = player.y - player.height/1.5
+        //powerUpBlip.x = player.x;
+        //powerUpBlip.y = player.y - player.height/1.5
         powerUpBlip.alpha += blipDirection*(1-powerUpBlip.alpha)/5;
         if (powerUpBlip.alpha >= 0.99) {
             blipDirection = -1;
@@ -312,21 +306,12 @@ function update() {
         bossHPBarBackdrop.y = bossHPBar.y;
         //hpMaskRect.x = bossHPBar.x;
         //hpMaskRect.y = bossHPBar.y;
-        bossHPBar.width = bigAlien.bossHP*screenWidth/125;
+        //bossHPBar.width = bigAlien.bossHP*screenWidth/125;
     }
 
     if (catchFlag && firing){
         var newX = deltaShipX + game.input.activePointer.worldX;
         var newY = deltaShipY + game.input.activePointer.worldY
-
-        var deltaX = player.x - newX; 
-
-        console.log(deltaX);
-
-        if (deltaX < -5){
-            player.play('bankLeft',10, false)
-
-        }
 
         if (newX > screenWidth-player.width/2){
             newX = screenWidth-player.width/2;
@@ -342,16 +327,47 @@ function update() {
             newY = screenHeight*.15;
         }
 
+
+        if (newX - player.x < -20){
+            player.play("bankR3");
+            player.scale.x = -1;
+        }
+        else if (newX - player.x < -10 && newX - player.x > -20){
+            player.play("bankR2");
+            player.scale.x = -1;
+        }
+        else if (newX - player.x < -2 && player.x - newX > -10){
+            player.play("bankR1");
+            player.scale.x = -1;
+        }
+        else if (newX - player.x < 2 && newX - player.x > -2){
+            player.play("bank0");
+            //player.scale.x = -1;
+        }
+        else if (newX - player.x > 2 && newX - player.x < 10){
+            player.play("bankR1");
+            player.scale.x = 1;
+        }
+        else if (newX - player.x > 10 && newX - player.x < 20){
+            player.play("bankR2");
+            player.scale.x = 1;
+        }
+        else if (newX - player.x > 20){
+            player.play("bankR3");
+            player.scale.x = 1;
+        }
+
         player.x = newX;
         player.y = newY;
         
         deltaShipX = player.x - game.input.activePointer.worldX;
         deltaShipY = player.y - game.input.activePointer.worldY;
+
     }
 
     if (player.alive) {
     //Auto fire at 2.5 into the game
-        if (game.time.now > 2500 && firing) {
+        if (firing) {
             fireBullet();
         }
     //Enemies fire timer
@@ -365,8 +381,6 @@ function update() {
         game.physics.arcade.overlap(aliens, player, enemyCrashPlayer, null, this);
         game.physics.arcade.overlap(bigAlien, player, bigEnemyCrashPlayer, null, this);
         game.physics.arcade.overlap(powerUp, player, powerUpPlayer, null, this);
-
-
     }
 }
 
@@ -399,21 +413,46 @@ function enemyCrashPlayer(player, littleEnemy) {
 }
 
 function bigEnemyCrashPlayer(bigEnemy, player) {
+    if (bigEnemy.body.y > 30) {
+        bossHPBar.alpha = 0.70;
+        bossHPBarBackdrop.alpha = 0.25;
 
-     bigEnemy.bossHP -= 0.25;
+        hpMaskRect.width = bigAlien.bossHP*screenWidth/125;  // <<<<< DIFFERENT FROM IPAD VERSION IPAD IS screenwidth/320
+        hpMaskRect.height = screenWidth/50;
+        bossHPBar.updateCrop();
+
+        spawnSpark(bullet.x, bigEnemy.y);
+
+        bigEnemy.bossHP -= 0.25;
         blinkRed(bigEnemy);
 
         if (bigEnemy.bossHP < 1) {
             score += 1000;
             scoreText.text = scoreString + score;
+
             bigEnemy.kill();
-            var explosion = explosions.getFirstExists(false);
-            explosion.reset(bigEnemy.body.x+32, bigEnemy.body.y+32);
-            explosion.play('kaboom', 30, false, true);
-            postviewStageAppearHelper();
-            firing = false;
-            endGame = false;
+            bossHPBar.kill();
+
+
+        for(i=0; i<10; i++){
+            setTimeout(function(){    
+                var explosion = explosions.getFirstExists(false);
+                explosion.reset(bigEnemy.body.x + Math.random()*bigEnemy.width*2, bigEnemy.body.y + Math.random()*bigEnemy.width*2);
+                explosion.play('kaboom', 24, false, true);
+        
+            }, 100*i)
+        }            bossHPBarBackdrop.kill();
+
+
+            setTimeout(function(){    
+                postviewStageAppearHelper();
+                firing = false;
+                endGame = false;
+            }, 1500)
+                
+
         }
+    }
 
     blink(player);
 
@@ -431,12 +470,16 @@ function powerUpBlip() {
     powerUpBlip.anchor.setTo(0.5, 0.5);
     game.physics.enable(powerUpBlip, Phaser.Physics.ARCADE);
     powerUpBlip.alpha = 0.05;
+    powerUpBlip.width = player.width * 1.0;
+    powerUpBlip.height = player.width * 0.5;
+    powerUpBlip.scale.x = 1;
+    powerUpBlip.scale.y = 1;
 }
 
 function render() {
 
-   // game.debug.geom(hpMaskRect);
-  //  game.debug.body(bigAlien);
+    //game.debug.geom(hpMaskRect);
+//    if (bigAlien){game.debug.body(bigAlien);}
 
 }
 
@@ -462,18 +505,22 @@ function collisionBossman(bigBoss, bullet) {
 
             bigBoss.kill();
             bossHPBar.kill();
-            bossHPBarBackdrop.kill();
+
+
+        for(i=0; i<10; i++){
+            setTimeout(function(){    
+                var explosion = explosions.getFirstExists(false);
+                explosion.reset(bigBoss.body.x + Math.random()*bigBoss.width*2, bigBoss.body.y + Math.random()*bigBoss.width*2);
+                explosion.play('kaboom', 24, false, true);
         
-            var explosion = explosions.getFirstExists(false);
-            explosion.reset(bigBoss.body.x+32, bigBoss.body.y+32);
-            explosion.play('kaboom', 30, false, true);
+            }, 100*i)
+        }            bossHPBarBackdrop.kill();
 
 
             setTimeout(function(){    
                 postviewStageAppearHelper();
                 firing = false;
                 endGame = false;
-                player.play('notFly');
             }, 1500)
                 
 
@@ -504,7 +551,7 @@ function blinkRed(thatGuy) {
     }, this);
 }
 
-function collisionHandler (alien, bullet) {
+function collisionHandler (bullet, alien) {
     if (alien.body.y > 20) {
         //  When a bullet hits an alien we kill them both
         bullet.kill();
@@ -515,9 +562,11 @@ function collisionHandler (alien, bullet) {
         scoreText.text = scoreString + score;
     
         //  And create an explosion :)
+
         var explosion = explosions.getFirstExists(false);
-        explosion.reset(alien.body.x, alien.body.y);
-        explosion.play('kaboom', 30, false, true);
+        explosion.reset(alien.body.x + screenWidth/320 * 16, alien.body.y + screenWidth/320 * 16);
+        explosion.play('kaboom', 30, false, true);       
+
 
         if (powerUpNext) {
             spawnPowerUp(alien.x,alien.y-screenWidth/5);
@@ -568,19 +617,19 @@ function fireBullet () {
         if (bullet) {
             //  And fire one bullet
             if (bulletCycle == 1) {
-                bullet.reset(player.x, player.y + 8);
-                bullet.body.velocity.y = -600;
+                bullet.reset(player.x, player.y + 8*screenWidth/320);
+                bullet.body.velocity.y = -600*screenWidth/320;
                 bulletCycle = 2;
             }
             else if (bulletCycle == 2) {
             //Fire Two Bullets  
-                bullet.reset(player.x-8, player.y + 8);
-                bullet.body.velocity.y = -600;
+                bullet.reset(player.x-8*screenWidth/320, player.y + 8*screenWidth/3208);
+                bullet.body.velocity.y = -600*screenWidth/320;
                 bullet = bullets.getFirstExists(false);
                 if (bullet) {
                     // And fire it
-                    bullet.reset(player.x+12, player.y + 8);
-                    bullet.body.velocity.y = -600;
+                    bullet.reset(player.x+14, player.y + 8);
+                    bullet.body.velocity.y = -600*screenWidth/320;
                 }
                 bulletCycle = 1;
             }
@@ -608,16 +657,16 @@ function timeline(){
     timelinetime += 800;
 
     setTimeout(function(){
-    //DROP OVERLAY FUNCTION FOR THE DIALOG BOX (SENCHA CODE)
+    //DROP OVERLAY FUNCTION FOR THE DIALOG BOX
     //dialogappearhelper();
-    dialogBox = game.add.sprite( -1 * screenWidth/2, screenHeight/3, 'dialogBox');
+    dialogBox = game.add.sprite( -1 * screenWidth/2, screenHeight/3.3, 'dialogBox');
+    dialogBox.width = screenWidth * 0.9;
+    dialogBox.height = screenWidth * 0.24;
     dialogBox.anchor.setTo(0.5, 0.5);
     game.physics.enable(dialogBox, Phaser.Physics.ARCADE);
   
     var dialogBoxSlideIn = game.add.tween(dialogBox)
         .to( { x: screenWidth/2 }, 500, "Sine", false, 0, 0, false)
-    //    .to( { x: screenWidth*7/8 }, 3000, Phaser.Easing.Linear.None, false, 150, 0, false)
-    //    .to( { x: screenWidth*1/8 }, 3000, Phaser.Easing.Linear.None, false, 150, 0, false)
         .to( { x:-1 *  screenWidth/2 }, 500, "Sine", false, 2500, 0, false)
         .start();
 
@@ -652,7 +701,6 @@ function timeline(){
  
     setTimeout(function(){ 
         firing = false;
-        player.play('notFly');
     }, timelinetime+ 9500)
     timelinetime += 9500;
        
