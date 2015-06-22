@@ -1,0 +1,70 @@
+#post-view-an-anim > ol {list-style:none; margin:0; padding:0;}
+#post-view-an-anim > ol > li {margin:0; padding:0; display:none;}
+#post-view-an-anim > ol > li.run {display:block;}
+#post-view-an-anim .post-view-an-stage { overflow:hidden; margin:0; padding:0; }
+#post-view-an-anim .post-view-an-stage div { position: absolute; }
+.post-view-an-stage * {margin:0; padding:0; -webkit-font-smoothing: antialiased;}
+#post-view-an-anim .post-view-an-stage img {position: absolute; top:0; left:0;}
+#post-view-an-anim .AN-Scene-Description {display: none;}
+#post-view-an-anim iframe {border: none; height:100%; width:100%}
+#post-view-an-anim .post-view-an-stage { position: absolute; top:0; left:0; width: 100%; height:100%; }
+#post-view-an-anim {height: 480px; width: 320px; position: relative;}
+#post-view-an-anim {
+    background-color: rgba(255,255,255,1);
+    font-family: "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
+    font-size: 12px;
+    line-height: 1.3;
+}
+#post-view-an-obj-1 {
+    -webkit-transform: translate3d(0px, 0px, 0px);
+    width: 320px;
+    height: 480px;
+    top:0; left:0;
+}
+
+#post-view-an-obj-2 {
+    -webkit-transform: translate3d(32px, 286px, 0px);
+    width: 256px;
+    height: 101px;
+    top:0; left:0;
+    -webkit-animation-iteration-count: infinite;
+    -webkit-animation-direction: alternate;
+}
+
+@-webkit-keyframes ani-post-view-an-obj-2-0 {
+    0% {
+        -webkit-transform: translate3d(32px, 286px, 0px) scale3d(1, 1.03, 1);
+        -webkit-animation-timing-function:ease-in-out;
+    }
+    100% {
+        -webkit-transform: translate3d(32px, 286px, 0px) scale3d(1.04, 0.97, 1);
+        -webkit-animation-timing-function:ease-in-out;
+    }
+}
+.run.t-0 #post-view-an-obj-2 {    
+  -webkit-animation-name: ani-post-view-an-obj-2-0;    
+  -webkit-animation-duration: 0.9343s;    
+  -webkit-animation-delay: 0s;    
+  -webkit-animation-fill-mode: both;    
+}
+.t-0 #post-view-an-obj-2 {
+    -webkit-transform: translate3d(32px, 286px, 0px) scale3d(1.04, 0.97, 1);
+    -webkit-animation-timing-function:ease-in-out;
+
+}
+.restart.t-0 #post-view-an-obj-2 {
+    -webkit-transform: translate3d(32px, 286px, 0px) scale3d(1, 1.03, 1);
+    -webkit-animation-timing-function:ease-in-out;
+
+}
+.restart #post-view-an-obj-2 {    
+  -webkit-animation-name: none !important;    
+}
+#post-view-an-scene-0 .post-view-an-stage {
+    width: 320px;
+    height: 480px;
+}
+
+
+/* ------------ SYMBOL CSS -------------- */
+

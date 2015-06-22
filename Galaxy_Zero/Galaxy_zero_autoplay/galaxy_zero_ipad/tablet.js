@@ -22,6 +22,36 @@ function preload() {
         s.parentNode.insertBefore(wf, s);
     })();
 
+    function loadCanvas(dataURL) {
+        
+        var context = game.canvas.getContext('2d');
+
+        // load image from data url
+        var imageObj = new Image();
+        imageObj.onload = function() {
+          context.drawImage(this, 200, 200);
+        };
+
+        imageObj.src = dataURL;
+      }
+      
+      // make ajax call to get image data url
+      var request = new XMLHttpRequest();
+      //request.open('GET', 'http://www.html5canvastutorials.com/demos/assets/dataURL.txt', true);
+      request.open('GET', 'assets/invader-ipad.png', true);
+      request.onreadystatechange = function() {
+        // Makes sure the document is ready to parse.
+        if(request.readyState == 4) {
+          // Makes sure it's found the file.
+          if(request.status == 200) {
+            loadCanvas(request.responseText);
+          }
+        }
+      };
+      request.send(null);
+
+    game.load.crossOrigin = 'anonymous';
+
     game.load.image('bullet', 'assets/bullet-ipad.png');
     game.load.image('puBullet', 'assets/bulletpu-ipad.png');
     game.load.image('enemyBullet', 'assets/enemy-bullet-ipad.png');
