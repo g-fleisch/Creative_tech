@@ -23,6 +23,8 @@ function preload() {
         s.parentNode.insertBefore(wf, s);
     })();
 
+    game.load.crossOrigin = 'anonymous';
+
     game.load.image('bullet', 'assets/bullet-iphone.png');
     game.load.image('puBullet', 'assets/bulletpu-iphone.png');
     game.load.image('enemyBullet', 'assets/enemy-bullet-iphone.png');

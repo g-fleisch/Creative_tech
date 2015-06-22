@@ -138,10 +138,9 @@ function create() {
     game.input.onUp.add(touchEnd);
 }
 
-function startTestDrive() {
+function startGame() {
     firing = true;
     showTutorial();
-    console.log("what");
 }
 
 function touchStart() {
@@ -218,6 +217,7 @@ function spawnBigAlien() {
     //bigAlien.rotation = 3.1415;
     bigAlien.bossHP = 25;
 
+    mixpanel.track(environment + " - boss spawns", properties);
 
     bossHPBarBackdrop = game.add.sprite( bigAlien.x, bigAlien.y + bigAlien.height/2, 'hpMask');
     bossHPBarBackdrop.width = 25*screenWidth/125;
@@ -421,6 +421,8 @@ function enemyCrashPlayer(player, littleEnemy) {
     score += 20;
     scoreText.text = scoreString + score;
     
+    if(score == 20) { mixpanel.track(environment + " - first enemy kill", properties);}
+
     //  And create an explosion :)
     var explosion = explosions.getFirstExists(false);
     explosion.reset(littleEnemy.body.x, littleEnemy.body.y);
@@ -438,7 +440,7 @@ function enemyCrashPlayer(player, littleEnemy) {
         enemyBullets.callAll('kill',this);
         if (score >1000 && score < 1155){
             timeline();
-            //spawnPowerUp(alien.
+            mixpanel.track(environment + " - first two enemies killed", properties);
         }
     }
 }
@@ -463,16 +465,18 @@ function bigEnemyCrashPlayer(bigEnemy, player) {
 
             bigEnemy.kill();
             bossHPBar.kill();
+            bossHPBarBackdrop.kill();
+
+            mixpanel.track(environment + " - kill boss", properties);
 
 
-        for(i=0; i<10; i++){
-            setTimeout(function(){    
-                var explosion = explosions.getFirstExists(false);
-                explosion.reset(bigEnemy.body.x + Math.random()*bigEnemy.width*2, bigEnemy.body.y + Math.random()*bigEnemy.width*2);
-                explosion.play('kaboom', 24, false, true);
-        
-            }, 100*i)
-        }            bossHPBarBackdrop.kill();
+            for(i=0; i<10; i++){
+                setTimeout(function(){    
+                    var explosion = explosions.getFirstExists(false);
+                    explosion.reset(bigEnemy.body.x + Math.random()*bigEnemy.width*2, bigEnemy.body.y + Math.random()*bigEnemy.width*2);
+                    explosion.play('kaboom', 24, false, true);
+                }, 100*i)
+            }           
 
 
             setTimeout(function(){    
@@ -494,6 +498,7 @@ function powerUpPlayer(powerUp, player) {
     powerUpSpinner.kill();
     bullets = puBullets;
     powerUpBlip();
+    mixpanel.track(environment + " - power-up get", properties);
 }
 
 function powerUpBlip() {
@@ -536,16 +541,17 @@ function collisionBossman(bigBoss, bullet) {
 
             bigBoss.kill();
             bossHPBar.kill();
+            bossHPBarBackdrop.kill();
+            mixpanel.track(environment + " - boss kill", properties);
 
 
-        for(i=0; i<10; i++){
-            setTimeout(function(){    
-                var explosion = explosions.getFirstExists(false);
-                explosion.reset(bigBoss.body.x + Math.random()*bigBoss.width*2, bigBoss.body.y + Math.random()*bigBoss.width*2);
-                explosion.play('kaboom', 24, false, true);
-        
-            }, 100*i)
-        }            bossHPBarBackdrop.kill();
+            for(i=0; i<10; i++){
+                setTimeout(function(){    
+                    var explosion = explosions.getFirstExists(false);
+                    explosion.reset(bigBoss.body.x + Math.random()*bigBoss.width*2, bigBoss.body.y + Math.random()*bigBoss.width*2);
+                    explosion.play('kaboom', 24, false, true);
+                }, 100*i)
+            }
 
 
             setTimeout(function(){    
@@ -592,6 +598,8 @@ function collisionHandler (bullet, alien) {
         score += 20;
         scoreText.text = scoreString + score;
     
+        if(score == 20) { mixpanel.track(environment + " - first enemy kill", properties);}
+
         //  And create an explosion :)
 
         var explosion = explosions.getFirstExists(false);
@@ -609,6 +617,7 @@ function collisionHandler (bullet, alien) {
             enemyBullets.callAll('kill',this);
             if (score >1000 && score < 1155){
                 timeline();
+                mixpanel.track(environment + " - first two enemies killed", properties);
                 //spawnPowerUp(alien.x, alien.y);
             }
         }
@@ -694,7 +703,9 @@ function timeline(){
     dialogBox.width = screenWidth * 0.8;
     dialogBox.height = screenWidth * 0.218;
     dialogBox.anchor.setTo(0.5, 0.5);
-    game.physics.enable(dialogBox, Phaser.Physics.ARCADE);
+    game.physics.enable(dialogBox, Phaser.Physics.ARCADE);    
+    mixpanel.track(environment + " - dialog box", properties);
+
   
     var dialogBoxSlideIn = game.add.tween(dialogBox)
         .to( { x: screenWidth/2 }, 500, "Sine", false, 0, 0, false)

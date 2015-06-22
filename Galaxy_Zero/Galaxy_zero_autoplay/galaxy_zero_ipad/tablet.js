@@ -22,6 +22,8 @@ function preload() {
         s.parentNode.insertBefore(wf, s);
     })();
 
+    game.load.crossOrigin = 'anonymous';
+
     game.load.image('bullet', 'assets/bullet-ipad.png');
     game.load.image('puBullet', 'assets/bulletpu-ipad.png');
     game.load.image('enemyBullet', 'assets/enemy-bullet-ipad.png');
@@ -42,7 +44,7 @@ function preload() {
     game.load.image('shipThruster', 'assets/shipThruster-ipad.png');
 }
 
-var fonter = "24px Michroma"
+var fonter = "20px Michroma"
 screenWidth = 768;
 screenHeight = 1024;
 /*
